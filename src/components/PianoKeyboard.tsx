@@ -22,73 +22,82 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
   const blackKeys = ['C#', 'D#', '', 'F#', 'G#', 'A#', ''];
 
   const renderKeys = () => {
-    const keys = [];
+    const whiteKeys = [];
+    const blackKeys = [];
     
     for (let octave = 0; octave < octaves; octave++) {
-      for (let i = 0; i < whiteKeys.length; i++) {
-        const whiteNote = whiteKeys[i];
-        const blackNote = blackKeys[i];
-        const whiteNoteWithOctave = `${whiteNote}${octave + 4}`;
-        const blackNoteWithOctave = blackNote ? `${blackNote}${octave + 4}` : '';
-
-        // White key
-        keys.push(
+      // Générer les touches blanches
+      const whiteNotes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+      whiteNotes.forEach((note, index) => {
+        const noteWithOctave = `${note}${octave + 4}`;
+        
+        whiteKeys.push(
           <div
-            key={whiteNoteWithOctave}
+            key={noteWithOctave}
             className={cn(
               'relative bg-white border border-border rounded-b-md cursor-pointer transition-all duration-150',
               'hover:bg-muted active:bg-accent',
               'flex items-end justify-center pb-2',
-              highlightedNotes.includes(whiteNote) && 'bg-primary text-primary-foreground hover:bg-primary/90',
+              highlightedNotes.includes(note) && 'bg-primary text-primary-foreground hover:bg-primary/90',
               'h-32 w-8 md:w-10'
             )}
             onClick={() => {
-              if (isLoaded) playNote(whiteNote, octave + 4);
-              onKeyPress?.(whiteNote);
+              if (isLoaded) playNote(note, octave + 4);
+              onKeyPress?.(note);
             }}
           >
             {showLabels && (
               <span className="text-xs font-medium">
-                {whiteNote}
+                {note}
               </span>
             )}
           </div>
         );
+      });
 
-        // Black key (if exists)
-        if (blackNote) {
-          keys.push(
-            <div
-              key={blackNoteWithOctave}
-              className={cn(
-                'absolute bg-gray-800 border border-gray-700 rounded-b-md cursor-pointer transition-all duration-150',
-                'hover:bg-gray-700 active:bg-gray-600',
-                'flex items-end justify-center pb-1',
-                highlightedNotes.includes(blackNote) && 'bg-secondary text-secondary-foreground hover:bg-secondary/90',
-                'h-20 w-5 md:w-6 z-10',
-                '-ml-3 md:-ml-3'
-              )}
-              style={{ 
-                left: `${(octave * 7 + i) * 40 + 20}px`,
-                transform: 'translateX(-50%)'
-              }}
-              onClick={() => {
-                if (isLoaded) playNote(blackNote, octave + 4);
-                onKeyPress?.(blackNote);
-              }}
-            >
-              {showLabels && (
-                <span className="text-xs font-medium text-white">
-                  {blackNote}
-                </span>
-              )}
-            </div>
-          );
-        }
-      }
+      // Générer les touches noires aux bonnes positions
+      const blackKeyData = [
+        { note: 'C#', whiteKeyIndex: 0.5 }, // Entre C et D
+        { note: 'D#', whiteKeyIndex: 1.5 }, // Entre D et E
+        { note: 'F#', whiteKeyIndex: 3.5 }, // Entre F et G
+        { note: 'G#', whiteKeyIndex: 4.5 }, // Entre G et A
+        { note: 'A#', whiteKeyIndex: 5.5 }, // Entre A et B
+      ];
+
+      blackKeyData.forEach(({ note, whiteKeyIndex }) => {
+        const noteWithOctave = `${note}${octave + 4}`;
+        const leftPosition = (octave * 7 + whiteKeyIndex) * 40; // 40px = w-10
+        
+        blackKeys.push(
+          <div
+            key={noteWithOctave}
+            className={cn(
+              'absolute bg-gray-800 border border-gray-700 rounded-b-md cursor-pointer transition-all duration-150',
+              'hover:bg-gray-700 active:bg-gray-600',
+              'flex items-end justify-center pb-1',
+              highlightedNotes.includes(note) && 'bg-secondary text-secondary-foreground hover:bg-secondary/90',
+              'h-20 w-5 md:w-6 z-10'
+            )}
+            style={{ 
+              left: `${leftPosition}px`,
+              transform: 'translateX(-50%)'
+            }}
+            onClick={() => {
+              if (isLoaded) playNote(note, octave + 4);
+              onKeyPress?.(note);
+            }}
+          >
+            {showLabels && (
+              <span className="text-xs font-medium text-white">
+                {note}
+              </span>
+            )}
+          </div>
+        );
+      });
     }
     
-    return keys;
+    return [...whiteKeys, ...blackKeys];
   };
 
   return (

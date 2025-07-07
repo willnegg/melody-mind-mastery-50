@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import PianoKeyboard from '@/components/PianoKeyboard';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 const PianoBasics: React.FC = () => {
@@ -121,6 +122,41 @@ const PianoBasics: React.FC = () => {
                     <li>• F est toujours juste à gauche du groupe de 3 touches noires.</li>
                     <li>• Tu connais désormais le nom des 7 notes, en français et en anglais.</li>
                   </ul>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Piano visuel */}
+          <Card>
+            <CardHeader>
+              <CardTitle>🎹 Voici le clavier !</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <p className="text-muted-foreground">
+                  Observe bien ce clavier et retrouve les motifs dont nous venons de parler :
+                </p>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>• Les groupes de 2 touches noires</li>
+                  <li>• Les groupes de 3 touches noires</li>
+                  <li>• Les notes C (Do) à gauche des groupes de 2</li>
+                  <li>• Les notes F (Fa) à gauche des groupes de 3</li>
+                </ul>
+                
+                <div className="overflow-x-auto bg-gradient-to-b from-muted/20 to-muted/10 p-4 rounded-lg">
+                  <PianoKeyboard 
+                    octaves={2}
+                    highlightedNotes={['C', 'F']}
+                    showLabels={true}
+                    onKeyPress={() => {}}
+                  />
+                </div>
+                
+                <div className="text-center">
+                  <p className="text-sm text-muted-foreground">
+                    Les touches C et F sont mises en évidence pour t'aider à les repérer !
+                  </p>
                 </div>
               </div>
             </CardContent>

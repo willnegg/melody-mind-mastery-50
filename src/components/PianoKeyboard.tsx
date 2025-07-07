@@ -36,10 +36,10 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
           <div
             key={whiteNoteWithOctave}
             className={cn(
-              'relative bg-white border border-border rounded-b-md cursor-pointer transition-all duration-150',
-              'hover:bg-muted active:bg-accent',
+              'relative bg-white border border-gray-300 rounded-b-md cursor-pointer transition-all duration-150',
+              'hover:bg-gray-50 active:bg-gray-100',
               'flex items-end justify-center pb-2',
-              highlightedNotes.includes(whiteNote) && 'bg-primary text-primary-foreground hover:bg-primary/90',
+              highlightedNotes.includes(whiteNote) && 'bg-blue-100 border-blue-300 shadow-md',
               'h-32 w-8 md:w-10'
             )}
             onClick={() => {
@@ -48,7 +48,10 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
             }}
           >
             {showLabels && (
-              <span className="text-xs font-medium">
+              <span className={cn(
+                'text-xs font-medium',
+                highlightedNotes.includes(whiteNote) ? 'text-blue-700 font-bold' : 'text-gray-600'
+              )}>
                 {whiteNote}
               </span>
             )}

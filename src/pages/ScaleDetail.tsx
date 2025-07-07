@@ -48,6 +48,25 @@ const ScaleDetail: React.FC = () => {
   // Ajouter l'octave (8ème degré)
   const completeScaleNotes = [...scaleNotes, currentRoot];
 
+  // Fonction pour obtenir la signature de la gamme
+  const getScaleSignature = (root: string) => {
+    const signatures: Record<string, string> = {
+      'C': 'Aucune altération',
+      'G': '1 dièse (F#)',
+      'F': '1 bémol (Bb)',
+      'D': '2 dièses (F#, C#)',
+      'Bb': '2 bémols (Bb, Eb)',
+      'A': '3 dièses (F#, C#, G#)',
+      'Eb': '3 bémols (Bb, Eb, Ab)',
+      'Ab': '4 bémols (Bb, Eb, Ab, Db)',
+      'E': '4 dièses (F#, C#, G#, D#)',
+      'B': '5 dièses (F#, C#, G#, D#, A#)',
+      'Db': '5 bémols (Bb, Eb, Ab, Db, Gb)',
+      'Gb': '6 bémols (Bb, Eb, Ab, Db, Gb, Cb)'
+    };
+    return signatures[root] || '';
+  };
+
   // Questions de quiz dynamiques
   const getQuizQuestions = (): QuizQuestion[] => [
     {
@@ -188,24 +207,6 @@ const ScaleDetail: React.FC = () => {
     if (currentScaleIndex < scaleProgression.length - 1 && isCurrentScaleCompleted) {
       setCurrentScaleIndex(currentScaleIndex + 1);
     }
-  };
-
-  const getScaleSignature = (root: string) => {
-    const signatures: Record<string, string> = {
-      'C': 'Aucune altération',
-      'G': '1 dièse (F#)',
-      'F': '1 bémol (Bb)',
-      'D': '2 dièses (F#, C#)',
-      'Bb': '2 bémols (Bb, Eb)',
-      'A': '3 dièses (F#, C#, G#)',
-      'Eb': '3 bémols (Bb, Eb, Ab)',
-      'Ab': '4 bémols (Bb, Eb, Ab, Db)',
-      'E': '4 dièses (F#, C#, G#, D#)',
-      'B': '5 dièses (F#, C#, G#, D#, A#)',
-      'Db': '5 bémols (Bb, Eb, Ab, Db, Gb)',
-      'Gb': '6 bémols (Bb, Eb, Ab, Db, Gb, Cb)'
-    };
-    return signatures[root] || '';
   };
 
   const getQuizScore = () => {

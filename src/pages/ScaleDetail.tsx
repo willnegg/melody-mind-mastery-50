@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { CheckCircle, Play, ArrowRight, ArrowLeft, Volume2 } from 'lucide-react';
+import { CheckCircle, Play, ArrowRight, ArrowLeft, Volume2, Brain } from 'lucide-react';
 import { scaleTypes, getScaleNotes } from '@/constants/musicTheory';
 import PianoKeyboard from '@/components/PianoKeyboard';
 import { useAudio } from '@/hooks/useAudio';
@@ -20,6 +20,12 @@ interface LearningStep {
   completed: boolean;
 }
 
+interface QuizQuestion {
+  question: string;
+  answers: string[];
+  correctAnswer: number;
+}
+
 const ScaleDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -28,20 +34,54 @@ const ScaleDetail: React.FC = () => {
   
   const [currentScaleIndex, setCurrentScaleIndex] = useState(0);
   const [playedNotes, setPlayedNotes] = useState<string[]>([]);
-  const [currentStep, setCurrentStep] = useState(0);
+  const [hasListened, setHasListened] = useState(false);
+  const [currentQuizQuestion, setCurrentQuizQuestion] = useState(0);
+  const [quizAnswers, setQuizAnswers] = useState<number[]>([]);
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [quizCompleted, setQuizCompleted] = useState(false);
   
   const scaleType = id as keyof typeof scaleTypes;
   const scale = scaleTypes[scaleType];
   const currentRoot = scaleProgression[currentScaleIndex];
   const scaleNotes = getScaleNotes(currentRoot, scaleType);
+  
+  // Ajouter l'octave (8ème degré)
+  const completeScaleNotes = [...scaleNotes, currentRoot];
+
+  // Questions de quiz dynamiques
+  const getQuizQuestions = (): QuizQuestion[] => [
+    {
+      question: `Combien y a-t-il de notes dans la gamme de ${currentRoot} majeur ?`,
+      answers: ['6 notes', '7 notes', '8 notes', '9 notes'],
+      correctAnswer: 1
+    },
+    {
+      question: `Quelle est la première note de la gamme de ${currentRoot} majeur ?`,
+      answers: [scaleNotes[1], currentRoot, scaleNotes[2], scaleNotes[3]],
+      correctAnswer: 1
+    },
+    {
+      question: `Quelle est la cinquième note (dominante) de la gamme de ${currentRoot} majeur ?`,
+      answers: [scaleNotes[3], scaleNotes[4], scaleNotes[5], scaleNotes[6]],
+      correctAnswer: 1
+    },
+    {
+      question: `${getScaleSignature(currentRoot)}. Cette gamme a :`,
+      answers: ['Aucune altération', 'Des dièses', 'Des bémols', 'Les deux'],
+      correctAnswer: currentRoot.includes('#') || ['F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb'].includes(currentRoot) ? 2 : 
+                   ['G', 'D', 'A', 'E', 'B'].includes(currentRoot) ? 1 : 0
+    }
+  ];
+
+  const quizQuestions = getQuizQuestions();
 
   // Étapes d'apprentissage
   const learningSteps: LearningStep[] = [
     {
       id: 'listen',
       title: 'Écouter la gamme',
-      description: `Écoutez la gamme de ${currentRoot} ${scale?.name}`,
-      completed: false
+      description: `Écoutez la gamme de ${currentRoot} ${scale?.name} complète`,
+      completed: hasListened
     },
     {
       id: 'play',
@@ -50,15 +90,16 @@ const ScaleDetail: React.FC = () => {
       completed: playedNotes.length === scaleNotes.length && scaleNotes.every(note => playedNotes.includes(note))
     },
     {
-      id: 'validate',
-      title: 'Validation',
-      description: 'Bravo ! Vous maîtrisez cette gamme',
-      completed: false
+      id: 'quiz',
+      title: 'Quiz de validation',
+      description: 'Testez vos connaissances avec un petit quiz',
+      completed: quizCompleted
     }
   ];
 
   const isCurrentScaleCompleted = scales[`${scaleType}-${currentRoot}`]?.completed || false;
   const progressPercentage = (currentScaleIndex / scaleProgression.length) * 100;
+  const allStepsCompleted = learningSteps.every(step => step.completed);
 
   useEffect(() => {
     // Trouve l'index de la gamme actuelle ou la première non complétée
@@ -67,6 +108,16 @@ const ScaleDetail: React.FC = () => {
     );
     setCurrentScaleIndex(uncompletedIndex === -1 ? 0 : uncompletedIndex);
   }, [scales, scaleType]);
+
+  useEffect(() => {
+    // Reset states when scale changes
+    setPlayedNotes([]);
+    setHasListened(false);
+    setShowQuiz(false);
+    setQuizCompleted(false);
+    setCurrentQuizQuestion(0);
+    setQuizAnswers([]);
+  }, [currentScaleIndex]);
 
   if (!scale) {
     return (
@@ -87,28 +138,55 @@ const ScaleDetail: React.FC = () => {
     }
   };
 
+  const handleListenScale = async () => {
+    if (isPlaying) {
+      stopAll();
+    } else {
+      await playScale(completeScaleNotes);
+      setHasListened(true);
+    }
+  };
+
+  const handleStartQuiz = () => {
+    setShowQuiz(true);
+    setCurrentQuizQuestion(0);
+  };
+
+  const handleQuizAnswer = (answerIndex: number) => {
+    const newAnswers = [...quizAnswers, answerIndex];
+    setQuizAnswers(newAnswers);
+
+    if (currentQuizQuestion < quizQuestions.length - 1) {
+      setCurrentQuizQuestion(currentQuizQuestion + 1);
+    } else {
+      // Quiz terminé
+      const correctAnswers = newAnswers.filter((answer, index) => 
+        answer === quizQuestions[index].correctAnswer
+      ).length;
+      
+      if (correctAnswers >= quizQuestions.length - 1) { // Au moins 3/4 correct
+        setQuizCompleted(true);
+      }
+      setShowQuiz(false);
+    }
+  };
+
   const handleCompleteScale = () => {
     completeScale(`${scaleType}-${currentRoot}`);
     if (currentScaleIndex < scaleProgression.length - 1) {
       setCurrentScaleIndex(currentScaleIndex + 1);
-      setPlayedNotes([]);
-      setCurrentStep(0);
     }
   };
 
   const handlePreviousScale = () => {
-    if (currentScaleIndex > 0) {
+    if (currentScaleIndex > 0 && isCurrentScaleCompleted) {
       setCurrentScaleIndex(currentScaleIndex - 1);
-      setPlayedNotes([]);
-      setCurrentStep(0);
     }
   };
 
   const handleNextScale = () => {
-    if (currentScaleIndex < scaleProgression.length - 1) {
+    if (currentScaleIndex < scaleProgression.length - 1 && isCurrentScaleCompleted) {
       setCurrentScaleIndex(currentScaleIndex + 1);
-      setPlayedNotes([]);
-      setCurrentStep(0);
     }
   };
 
@@ -128,6 +206,13 @@ const ScaleDetail: React.FC = () => {
       'Gb': '6 bémols (Bb, Eb, Ab, Db, Gb, Cb)'
     };
     return signatures[root] || '';
+  };
+
+  const getQuizScore = () => {
+    const correctAnswers = quizAnswers.filter((answer, index) => 
+      answer === quizQuestions[index].correctAnswer
+    ).length;
+    return `${correctAnswers}/${quizQuestions.length}`;
   };
 
   return (
@@ -170,7 +255,8 @@ const ScaleDetail: React.FC = () => {
                     size="sm"
                     variant="outline"
                     onClick={handlePreviousScale}
-                    disabled={currentScaleIndex === 0}
+                    disabled={currentScaleIndex === 0 || !isCurrentScaleCompleted}
+                    title={!isCurrentScaleCompleted ? "Terminez cette gamme avant de naviguer" : ""}
                   >
                     <ArrowLeft className="h-4 w-4" />
                   </Button>
@@ -178,7 +264,8 @@ const ScaleDetail: React.FC = () => {
                     size="sm"
                     variant="outline"
                     onClick={handleNextScale}
-                    disabled={currentScaleIndex === scaleProgression.length - 1}
+                    disabled={currentScaleIndex === scaleProgression.length - 1 || !isCurrentScaleCompleted}
+                    title={!isCurrentScaleCompleted ? "Terminez cette gamme avant de naviguer" : ""}
                   >
                     <ArrowRight className="h-4 w-4" />
                   </Button>
@@ -196,18 +283,19 @@ const ScaleDetail: React.FC = () => {
                         variant={playedNotes.includes(note) ? "default" : "outline"}
                         className="transition-colors"
                       >
-                        {note}
+                        {index + 1}. {note}
                       </Badge>
                     ))}
+                    <Badge variant="secondary">8. {currentRoot}</Badge>
                   </div>
                 </div>
                 <Button
                   variant="outline"
-                  onClick={() => isPlaying ? stopAll() : playScale(scaleNotes)}
+                  onClick={handleListenScale}
                   disabled={!isLoaded}
                 >
                   <Volume2 className="h-4 w-4 mr-2" />
-                  {isPlaying ? 'Stop' : 'Écouter'}
+                  {isPlaying ? 'Stop' : 'Écouter la gamme'}
                 </Button>
               </div>
             </CardContent>
@@ -231,16 +319,75 @@ const ScaleDetail: React.FC = () => {
                       <h3 className="font-medium">{step.title}</h3>
                       <p className="text-sm text-muted-foreground">{step.description}</p>
                     </div>
+                    {step.id === 'quiz' && learningSteps[1].completed && !step.completed && !showQuiz && (
+                      <Button onClick={handleStartQuiz} size="sm">
+                        <Brain className="h-4 w-4 mr-2" />
+                        Commencer le quiz
+                      </Button>
+                    )}
                   </div>
                 ))}
               </div>
             </CardContent>
           </Card>
 
+          {/* Quiz */}
+          {showQuiz && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Quiz - Question {currentQuizQuestion + 1}/{quizQuestions.length}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">{quizQuestions[currentQuizQuestion].question}</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {quizQuestions[currentQuizQuestion].answers.map((answer, index) => (
+                      <Button
+                        key={index}
+                        variant="outline"
+                        onClick={() => handleQuizAnswer(index)}
+                        className="text-left justify-start h-auto p-4"
+                      >
+                        {answer}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Résultat du quiz */}
+          {quizAnswers.length === quizQuestions.length && !showQuiz && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Résultat du quiz</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center">
+                  <p className="text-lg mb-2">Score : {getQuizScore()}</p>
+                  {quizCompleted ? (
+                    <div className="text-green-600">
+                      <CheckCircle className="h-8 w-8 mx-auto mb-2" />
+                      <p>Excellent ! Vous avez validé cette gamme.</p>
+                    </div>
+                  ) : (
+                    <div className="text-orange-600">
+                      <p>Vous pouvez recommencer le quiz pour améliorer votre score.</p>
+                      <Button onClick={handleStartQuiz} className="mt-2">
+                        Recommencer le quiz
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Piano interactif */}
           <Card>
             <CardHeader>
-              <CardTitle>Piano - Jouez les notes de la gamme</CardTitle>
+              <CardTitle>Piano - Jouez les 7 notes de la gamme</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">
@@ -255,10 +402,10 @@ const ScaleDetail: React.FC = () => {
                 <p className="text-sm text-muted-foreground mb-2">
                   Notes jouées : {playedNotes.length}/{scaleNotes.length}
                 </p>
-                {learningSteps[1].completed && !isCurrentScaleCompleted && (
+                {allStepsCompleted && !isCurrentScaleCompleted && (
                   <Button onClick={handleCompleteScale} className="mt-2">
                     <CheckCircle className="h-4 w-4 mr-2" />
-                    Valider cette gamme
+                    Terminer cette gamme
                   </Button>
                 )}
               </div>

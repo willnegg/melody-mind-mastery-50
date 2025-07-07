@@ -78,11 +78,8 @@ const Learn: React.FC = () => {
                       <div className="flex items-center justify-between">
                         <div className="flex-1">
                           <h3 className="font-medium mb-1 group-hover:text-primary transition-colors">
-                            Explorer les gammes
+                            Commence ici en explorant les gammes
                           </h3>
-                          <p className="text-sm text-muted-foreground">
-                            Découvrir les {category.items.length} types de gammes disponibles
-                          </p>
                         </div>
                         <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors ml-2" />
                       </div>

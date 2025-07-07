@@ -1,16 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChevronRight, ArrowLeft } from 'lucide-react';
+import { ChevronRight, ArrowLeft, Lock } from 'lucide-react';
 import { scaleTypes } from '@/constants/musicTheory';
 
 const ScalesSummary: React.FC = () => {
-  const scales = Object.entries(scaleTypes).map(([key, scale]) => ({
-    id: key,
-    name: scale.name,
-    description: scale.description,
-    link: `/scale/${key}`
-  }));
+  // Gammes de base (débloquées)
+  const basicScales = [
+    { id: 'major', name: 'Majeure', isUnlocked: true },
+    { id: 'minor', name: 'Mineure', isUnlocked: true },
+    { id: 'pentatonic', name: 'Pentatonique', isUnlocked: true }
+  ];
+
+  // Modes avancés (verrouillés)
+  const advancedScales = [
+    { id: 'blues', name: 'Blues', isUnlocked: false },
+    { id: 'dorian', name: 'Dorien', isUnlocked: false }
+  ];
 
   return (
     <div className="min-h-screen bg-background pb-20 p-4">
@@ -30,10 +36,11 @@ const ScalesSummary: React.FC = () => {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {scales.map((scale) => (
+          {/* Gammes de base */}
+          {basicScales.map((scale) => (
             <Link
               key={scale.id}
-              to={scale.link}
+              to={`/scale/${scale.id}`}
               className="group p-4 rounded-lg bg-card border border-border hover:border-primary/50 transition-all duration-200 hover:bg-accent/50"
             >
               <div className="flex items-center justify-between">
@@ -41,13 +48,22 @@ const ScalesSummary: React.FC = () => {
                   <h3 className="font-medium mb-1 group-hover:text-primary transition-colors">
                     {scale.name}
                   </h3>
-                  <p className="text-sm text-muted-foreground line-clamp-2">
-                    {scale.description}
-                  </p>
                 </div>
                 <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors ml-2" />
               </div>
             </Link>
+          ))}
+          
+          {/* Modes avancés (verrouillés) */}
+          {advancedScales.map((scale) => (
+            <div
+              key={scale.id}
+              className="p-4 rounded-lg bg-card border border-border opacity-60"
+            >
+              <div className="flex items-center justify-center">
+                <Lock className="h-6 w-6 text-muted-foreground" />
+              </div>
+            </div>
           ))}
         </div>
       </div>

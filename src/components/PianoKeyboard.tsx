@@ -80,9 +80,9 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
               'h-20 w-5 md:w-6 z-10'
             )}
             style={{ 
-              left: `${centerPosition * 2}rem`,
+              left: `calc(${centerPosition} * 2rem)`,
               transform: 'translateX(-50%)'
-            }}
+            } as React.CSSProperties}
             onClick={() => {
               if (isLoaded) playNote(note, octave + 4);
               onKeyPress?.(note);

@@ -1,73 +1,217 @@
-# Welcome to your Lovable project
+# 🎵 Music Theory App
 
-## Project info
+Une application web interactive pour apprendre et pratiquer la théorie musicale. Développée avec React, TypeScript et Tailwind CSS.
 
-**URL**: https://lovable.dev/projects/4e071142-7b9b-4f24-8933-860029761e68
+## ✨ Fonctionnalités
 
-## How can I edit this code?
+### 📚 Apprentissage
+- **Gammes** : Major, Minor, Pentatonic, Blues, Dorian avec descriptions détaillées
+- **Accords** : Triades, accords de 7ème avec inversions
+- **Cadences** : Perfect, Plagal, Imperfect, Deceptive, Half avec analyse harmonique
+- **Entraînement auditif** : Intervalles, accords, gammes, progressions
 
-There are several ways of editing your application.
+### 🎹 Pratique Interactive
+- Piano virtuel 2 octaves avec touches blanches et noires
+- Sélecteur de note racine (12 notes)
+- Affichage des notes sur le piano
+- Système de défis aléatoires
+- Feedback immédiat avec bouton "Show Answer"
 
-**Use Lovable**
+### 👂 Entraînement Auditif
+- Quiz de 10 questions par type
+- 4 catégories : intervalles, accords, gammes, progressions
+- Système de score et pourcentages
+- Conseils d'apprentissage pour chaque catégorie
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/4e071142-7b9b-4f24-8933-860029761e68) and start prompting.
+### 📊 Suivi des Progrès
+- Streak de jours consécutifs
+- Pourcentage de complétion global
+- Statistiques détaillées par catégorie
+- Historique des activités récentes
+- Scores d'entraînement auditif
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🛠️ Technologies Utilisées
 
-**Use your preferred IDE**
+- **React 18** - Framework JavaScript
+- **TypeScript** - Typage statique
+- **Tailwind CSS** - Framework CSS utilitaire
+- **Shadcn/ui** - Composants UI
+- **Zustand** - Gestion d'état globale
+- **React Router** - Navigation
+- **Lucide React** - Icônes
+- **Vite** - Build tool
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🎨 Design System
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Couleurs
+- **Primary** : `#6A5ACD` (Slate Blue)
+- **Secondary** : `#9370DB` (Medium Purple)
+- **Background** : `#121212` (Dark)
+- **Surface** : `#1E1E1E` (Dark Surface)
 
-Follow these steps:
+### Thème
+- Design moderne sombre inspiré iOS/Linear/Notion
+- Cards arrondies avec bordures subtiles
+- Animations fluides et transitions douces
+- Interface responsive mobile-first
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 🚀 Installation et Lancement
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+1. **Cloner le projet**
+```bash
+git clone [URL_DU_REPO]
+cd music-theory-app
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
+2. **Installer les dépendances**
+```bash
+npm install
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+3. **Lancer en développement**
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+4. **Build pour production**
+```bash
+npm run build
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📱 Navigation
 
-**Use GitHub Codespaces**
+L'application utilise une navigation par onglets en bas d'écran :
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- **Learn** (`/learn`) - Hub d'apprentissage avec toutes les catégories
+- **Practice** (`/practice`) - Interface de pratique interactive
+- **Ear Training** (`/ear-training`) - Entraînement auditif
+- **Progress** (`/progress`) - Suivi des progrès et statistiques
 
-## What technologies are used for this project?
+## 🔗 Routes Disponibles
 
-This project is built with:
+### Pages Principales
+- `/` - Redirection vers Learn
+- `/learn` - Hub d'apprentissage
+- `/practice` - Interface de pratique
+- `/ear-training` - Hub d'entraînement auditif
+- `/progress` - Dashboard de progression
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Pages Détails
+- `/scale/[id]` - Détails d'une gamme (ex: `/scale/major`)
+- `/chord/[id]` - Détails d'un accord (ex: `/chord/minor7`)
+- `/cadence/[id]` - Détails d'une cadence (ex: `/cadence/perfect`)
+- `/ear-training/[type]` - Exercices auditifs (ex: `/ear-training/intervals`)
 
-## How can I deploy this project?
+## 🎼 Données Musicales
 
-Simply open [Lovable](https://lovable.dev/projects/4e071142-7b9b-4f24-8933-860029761e68) and click on Share -> Publish.
+### Gammes Supportées
+- **Major** : 0,2,4,5,7,9,11 (W-W-H-W-W-W-H)
+- **Minor** : 0,2,3,5,7,8,10 (W-H-W-W-H-W-W)
+- **Pentatonic** : 0,2,4,7,9
+- **Blues** : 0,3,5,6,7,10
+- **Dorian** : 0,2,3,5,7,9,10
 
-## Can I connect a custom domain to my Lovable project?
+### Accords Supportés
+- **Major** : 0,4,7
+- **Minor** : 0,3,7
+- **Diminished** : 0,3,6
+- **Augmented** : 0,4,8
+- **Major 7th** : 0,4,7,11
+- **Dominant 7th** : 0,4,7,10
+- **Minor 7th** : 0,3,7,10
 
-Yes, you can!
+### Cadences
+- **Perfect** : V-I (résolution forte)
+- **Plagal** : IV-I (cadence "Amen")
+- **Imperfect** : I-V (attente)
+- **Deceptive** : V-vi (résolution surprise)
+- **Half** : I-V (demi-cadence)
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 🗂️ Structure du Projet
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+```
+src/
+├── components/          # Composants réutilisables
+│   ├── ui/             # Composants UI Shadcn
+│   ├── PianoKeyboard.tsx
+│   ├── CircleOfFifths.tsx
+│   ├── ScaleDisplay.tsx
+│   ├── ChordDisplay.tsx
+│   ├── ProgressBar.tsx
+│   └── Navigation.tsx
+├── pages/              # Pages de l'application
+│   ├── Learn.tsx
+│   ├── Practice.tsx
+│   ├── EarTraining.tsx
+│   ├── Progress.tsx
+│   ├── ScaleDetail.tsx
+│   ├── ChordDetail.tsx
+│   ├── CadenceDetail.tsx
+│   └── EarTrainingExercise.tsx
+├── constants/          # Données musicales
+│   └── musicTheory.ts
+├── store/             # Gestion d'état
+│   └── progressStore.ts
+├── hooks/             # Hooks personnalisés
+└── lib/               # Utilitaires
+```
+
+## 💾 Persistance des Données
+
+L'application utilise `localStorage` via Zustand pour sauvegarder :
+- Progression des gammes et accords pratiqués
+- Scores d'entraînement auditif
+- Streak de jours consécutifs
+- Statistiques globales
+
+## 🎯 Fonctionnalités Clés
+
+### Piano Virtuel
+- 2 octaves (C4-B5)
+- Touches blanches et noires interactives
+- Highlight des notes selon le contexte
+- Labels optionnels sur les touches
+
+### Cercle des Quintes
+- Représentation SVG interactive
+- Cercle extérieur : tonalités majeures
+- Cercle intérieur : relatives mineures
+- Cliquable pour changer la tonique
+
+### Système de Progression
+- Suivi automatique des éléments pratiqués
+- Calcul des streaks quotidiens
+- Pourcentages de complétion
+- Historique détaillé
+
+## 🔧 Personnalisation
+
+### Ajouter une Nouvelle Gamme
+1. Éditer `src/constants/musicTheory.ts`
+2. Ajouter la gamme dans `scaleTypes`
+3. La gamme apparaîtra automatiquement dans l'interface
+
+### Ajouter un Nouvel Accord
+1. Éditer `src/constants/musicTheory.ts`
+2. Ajouter l'accord dans `chordTypes`
+3. L'accord sera disponible dans Practice et Learn
+
+## 🤝 Contribution
+
+1. Fork le projet
+2. Créer une branche feature (`git checkout -b feature/AmazingFeature`)
+3. Commit les changements (`git commit -m 'Add AmazingFeature'`)
+4. Push vers la branche (`git push origin feature/AmazingFeature`)
+5. Ouvrir une Pull Request
+
+## 📝 License
+
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+
+## 🎵 Crédits
+
+Développé avec ❤️ pour les passionnés de musique et de théorie musicale.
+
+---
+
+**Note** : Cette application est à des fins éducatives. Les fonctionnalités audio sont simulées (boutons "Play Sound" comme placeholders).

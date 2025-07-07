@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { useAudio } from '@/hooks/useAudio';
@@ -54,18 +53,19 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
         );
       });
 
-      // Générer les touches noires avec un positionnement réaliste comme sur un vrai piano
-      const blackKeyPositions = [
-        { note: 'C#', leftOffset: 0.75 }, // Légèrement à droite de C
-        { note: 'D#', leftOffset: 1.75 }, // Légèrement à droite de D
-        { note: 'F#', leftOffset: 3.75 }, // Légèrement à droite de F
-        { note: 'G#', leftOffset: 4.75 }, // Légèrement à droite de G
-        { note: 'A#', leftOffset: 5.75 }, // Légèrement à droite de A
+      // Position exacte des touches noires selon un vrai piano
+      // C# entre C-D, D# entre D-E, F# entre F-G, G# entre G-A, A# entre A-B
+      const blackKeyData = [
+        { note: 'C#', whiteKeyIndex: 0.5 }, // Entre C (0) et D (1)
+        { note: 'D#', whiteKeyIndex: 1.5 }, // Entre D (1) et E (2)  
+        { note: 'F#', whiteKeyIndex: 3.5 }, // Entre F (3) et G (4)
+        { note: 'G#', whiteKeyIndex: 4.5 }, // Entre G (4) et A (5)
+        { note: 'A#', whiteKeyIndex: 5.5 }, // Entre A (5) et B (6)
       ];
 
-      blackKeyPositions.forEach(({ note, leftOffset }) => {
+      blackKeyData.forEach(({ note, whiteKeyIndex }) => {
         const noteWithOctave = `${note}${octave + 4}`;
-        const positionInOctave = octave * 7 + leftOffset;
+        const absolutePosition = octave * 7 + whiteKeyIndex;
         
         blackKeys.push(
           <div
@@ -77,9 +77,9 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
               'h-20 w-5 md:w-6 z-10'
             )}
             style={{ 
-              left: `calc(${positionInOctave} * 2rem)`,
+              left: `${absolutePosition * 2}rem`,
               transform: 'translateX(-50%)'
-            } as React.CSSProperties}
+            }}
             onClick={() => {
               if (isLoaded) playNote(note, octave + 4);
               onKeyPress?.(note);

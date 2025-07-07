@@ -20,25 +20,32 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
   const { playNote, isLoaded } = useAudio();
 
   const renderKeys = () => {
-    const whiteKeys = [];
-    const blackKeys = [];
+    const keys = [];
     
     for (let octave = 0; octave < octaves; octave++) {
-      // Générer les touches blanches
+      // Génération de toutes les touches dans l'ordre logique
       const whiteNotes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+      
       whiteNotes.forEach((note, index) => {
         const noteWithOctave = `${note}${octave + 4}`;
+        const position = octave * 7 + index;
         
-        whiteKeys.push(
+        // Touche blanche
+        keys.push(
           <div
             key={noteWithOctave}
             className={cn(
-              'relative bg-white border border-border rounded-b-md cursor-pointer transition-all duration-150',
+              'bg-white border border-border rounded-b-md cursor-pointer transition-all duration-150',
               'hover:bg-muted active:bg-accent',
               'flex items-end justify-center pb-2',
               highlightedNotes.includes(note) && 'bg-primary text-primary-foreground hover:bg-primary/90',
               'h-32 w-8 md:w-10'
             )}
+            style={{ 
+              position: 'absolute',
+              left: `calc(${position} * 2rem)`,
+              zIndex: 1
+            }}
             onClick={() => {
               if (isLoaded) playNote(note, octave + 4);
               onKeyPress?.(note);
@@ -51,56 +58,58 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
             )}
           </div>
         );
-      });
-
-      // Position exacte des touches noires selon un vrai piano
-      // C# entre C-D, D# entre D-E, F# entre F-G, G# entre G-A, A# entre A-B
-      const blackKeyData = [
-        { note: 'C#', whiteKeyIndex: 0.5 }, // Entre C (0) et D (1)
-        { note: 'D#', whiteKeyIndex: 1.5 }, // Entre D (1) et E (2)  
-        { note: 'F#', whiteKeyIndex: 3.5 }, // Entre F (3) et G (4)
-        { note: 'G#', whiteKeyIndex: 4.5 }, // Entre G (4) et A (5)
-        { note: 'A#', whiteKeyIndex: 5.5 }, // Entre A (5) et B (6)
-      ];
-
-      blackKeyData.forEach(({ note, whiteKeyIndex }) => {
-        const noteWithOctave = `${note}${octave + 4}`;
-        const absolutePosition = octave * 7 + whiteKeyIndex;
         
-        blackKeys.push(
-          <div
-            key={noteWithOctave}
-            className={cn(
-              'absolute bg-gray-800 border border-gray-700 rounded-b-md cursor-pointer transition-all duration-150',
-              'hover:bg-gray-700 active:bg-gray-600',
-              'flex items-end justify-center pb-1',
-              'h-20 w-5 md:w-6 z-10'
-            )}
-            style={{ 
-              left: `${absolutePosition * 2}rem`,
-              transform: 'translateX(-50%)'
-            }}
-            onClick={() => {
-              if (isLoaded) playNote(note, octave + 4);
-              onKeyPress?.(note);
-            }}
-          >
-            {showLabels && (
-              <span className="text-xs font-medium text-white">
-                {note}
-              </span>
-            )}
-          </div>
-        );
+        // Ajouter la touche noire correspondante si elle existe
+        const blackNoteMap: Record<string, string> = {
+          'C': 'C#',
+          'D': 'D#',
+          'F': 'F#',
+          'G': 'G#',
+          'A': 'A#'
+        };
+        
+        if (blackNoteMap[note]) {
+          const blackNote = blackNoteMap[note];
+          const blackNoteWithOctave = `${blackNote}${octave + 4}`;
+          const blackPosition = position + 0.5; // Centre entre cette touche et la suivante
+          
+          keys.push(
+            <div
+              key={blackNoteWithOctave}
+              className={cn(
+                'bg-gray-800 border border-gray-700 rounded-b-md cursor-pointer transition-all duration-150',
+                'hover:bg-gray-700 active:bg-gray-600',
+                'flex items-end justify-center pb-1',
+                'h-20 w-5 md:w-6'
+              )}
+              style={{ 
+                position: 'absolute',
+                left: `calc(${blackPosition} * 2rem)`,
+                transform: 'translateX(-50%)',
+                zIndex: 2
+              }}
+              onClick={() => {
+                if (isLoaded) playNote(blackNote, octave + 4);
+                onKeyPress?.(blackNote);
+              }}
+            >
+              {showLabels && (
+                <span className="text-xs font-medium text-white">
+                  {blackNote}
+                </span>
+              )}
+            </div>
+          );
+        }
       });
     }
     
-    return [...whiteKeys, ...blackKeys];
+    return keys;
   };
 
   return (
-    <div className={cn('relative flex bg-background p-4 rounded-lg border', className)}>
-      <div className="relative flex gap-0">
+    <div className={cn('relative bg-background p-4 rounded-lg border', className)}>
+      <div className="relative" style={{ height: '8rem', width: `${octaves * 7 * 2}rem` }}>
         {renderKeys()}
       </div>
     </div>

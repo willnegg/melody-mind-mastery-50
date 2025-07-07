@@ -66,8 +66,9 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
 
       blackKeyPositions.forEach(({ note, position }) => {
         const blackNoteWithOctave = `${note}${octave + 4}`;
-        const keyWidth = 32; // Same as md:w-10 in pixels
-        const leftPosition = (octave * 7 + position) * keyWidth;
+        // Utiliser la même largeur que les touches blanches pour le calcul
+        const whiteKeyWidth = 40; // md:w-10 = 40px
+        const leftPosition = (octave * 7 + position) * whiteKeyWidth;
 
         blackKeys.push(
           <div
@@ -77,7 +78,7 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
               'hover:bg-gray-700 active:bg-gray-600',
               'flex items-end justify-center pb-1',
               highlightedNotes.includes(note) && 'bg-secondary text-secondary-foreground hover:bg-secondary/90',
-              'h-20 w-5 md:w-6 z-10'
+              'h-20 w-6 z-10'
             )}
             style={{ 
               left: `${leftPosition}px`,

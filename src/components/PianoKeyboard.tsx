@@ -69,7 +69,7 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
                 '-ml-3 md:-ml-3'
               )}
               style={{ 
-                left: `${(octave * 7 + i) * 32 + 20}px`,
+                left: `${(octave * 7 + i) * 40 + 20}px`,
                 transform: 'translateX(-50%)'
               }}
               onClick={() => {

@@ -66,7 +66,6 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
 
       blackKeyData.forEach(({ note, whiteKeyIndex }) => {
         const noteWithOctave = `${note}${octave + 4}`;
-        const leftPosition = (octave * 7 + whiteKeyIndex) * 40; // 40px = w-10
         
         blackKeys.push(
           <div
@@ -79,7 +78,7 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
               'h-20 w-5 md:w-6 z-10'
             )}
             style={{ 
-              left: `${leftPosition}px`,
+              left: `${(octave * 7 + whiteKeyIndex) * 2}rem`,
               transform: 'translateX(-50%)'
             }}
             onClick={() => {

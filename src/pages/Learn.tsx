@@ -70,27 +70,46 @@ const Learn: React.FC = () => {
               </CardHeader>
               <CardContent>
                 {category.isUnlocked ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {category.items.map((item) => (
-                      <Link
-                        key={item.id}
-                        to={item.link}
-                        className="group p-4 rounded-lg bg-card border border-border hover:border-primary/50 transition-all duration-200 hover:bg-accent/50"
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1">
-                            <h3 className="font-medium mb-1 group-hover:text-primary transition-colors">
-                              {item.name}
-                            </h3>
-                            <p className="text-sm text-muted-foreground line-clamp-2">
-                              {item.description}
-                            </p>
-                          </div>
-                          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors ml-2" />
+                  category.title === 'Gammes' ? (
+                    <Link
+                      to="/scales"
+                      className="group p-4 rounded-lg bg-card border border-border hover:border-primary/50 transition-all duration-200 hover:bg-accent/50 block"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1">
+                          <h3 className="font-medium mb-1 group-hover:text-primary transition-colors">
+                            Explorer les gammes
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            Découvrir les {category.items.length} types de gammes disponibles
+                          </p>
                         </div>
-                      </Link>
-                    ))}
-                  </div>
+                        <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors ml-2" />
+                      </div>
+                    </Link>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {category.items.map((item) => (
+                        <Link
+                          key={item.id}
+                          to={item.link}
+                          className="group p-4 rounded-lg bg-card border border-border hover:border-primary/50 transition-all duration-200 hover:bg-accent/50"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1">
+                              <h3 className="font-medium mb-1 group-hover:text-primary transition-colors">
+                                {item.name}
+                              </h3>
+                              <p className="text-sm text-muted-foreground line-clamp-2">
+                                {item.description}
+                              </p>
+                            </div>
+                            <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors ml-2" />
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  )
                 ) : (
                   <div className="flex items-center justify-center py-8 text-muted-foreground">
                     <Lock className="h-4 w-4 mr-2" />

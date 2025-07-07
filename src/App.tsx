@@ -11,6 +11,7 @@ import Progress from "./pages/Progress";
 import ScaleDetail from "./pages/ScaleDetail";
 import ChordDetail from "./pages/ChordDetail";
 import CadenceDetail from "./pages/CadenceDetail";
+import ScalesSummary from "./pages/ScalesSummary";
 import EarTrainingExercise from "./pages/EarTrainingExercise";
 import NotFound from "./pages/NotFound";
 
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/practice" element={<Practice />} />
             <Route path="/ear-training" element={<EarTraining />} />
             <Route path="/progress" element={<Progress />} />
+            <Route path="/scales" element={<ScalesSummary />} />
             <Route path="/scale/:id" element={<ScaleDetail />} />
             <Route path="/chord/:id" element={<ChordDetail />} />
             <Route path="/cadence/:id" element={<CadenceDetail />} />

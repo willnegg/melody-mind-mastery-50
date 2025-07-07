@@ -48,6 +48,22 @@ const ScaleDetail: React.FC = () => {
   // Ajouter l'octave (8ème degré) - une octave plus haut
   const completeScaleNotes = [...scaleNotes.map(note => `${note}4`), `${currentRoot}5`];
 
+  // Fonction pour obtenir le nom de la gamme avec français/international
+  const getScaleDisplayName = (root: string) => {
+    const frenchNames: Record<string, string> = {
+      'C': 'C (Do)',
+      'G': 'G (Sol)', 
+      'F': 'F (Fa)',
+      'D': 'D (Ré)'
+    };
+    
+    // Afficher les noms français pour les 4 premières gammes, puis seulement international
+    if (currentScaleIndex < 4) {
+      return frenchNames[root] || root;
+    }
+    return root;
+  };
+
   // Fonction pour obtenir la signature de la gamme
   const getScaleSignature = (root: string) => {
     const signatures: Record<string, string> = {
@@ -344,6 +360,38 @@ const ScaleDetail: React.FC = () => {
                     <li>• F est toujours juste à gauche du groupe de 3 touches noires.</li>
                     <li>• Tu connais désormais le nom des 7 notes, en français et en anglais.</li>
                   </ul>
+
+                  <h4 className="font-semibold text-foreground mt-4 mb-2">🎵 Construction d'une gamme majeure</h4>
+                  <p className="text-muted-foreground">
+                    Maintenant que tu connais les notes, voyons comment construire une gamme majeure. Toutes les gammes majeures suivent la même formule en <strong>tons</strong> et <strong>demi-tons</strong> :
+                  </p>
+                  
+                  <div className="bg-muted p-4 rounded-lg my-4">
+                    <p className="font-mono text-center text-lg font-semibold">
+                      Ton - Ton - Demi-ton - Ton - Ton - Ton - Demi-ton
+                    </p>
+                    <p className="text-center text-sm text-muted-foreground mt-2">
+                      Cette formule magique crée TOUJOURS une gamme majeure !
+                    </p>
+                  </div>
+
+                  <h5 className="font-medium text-foreground">Qu'est-ce qu'un ton et un demi-ton ?</h5>
+                  <ul className="text-muted-foreground space-y-1">
+                    <li>• <strong>Demi-ton</strong> : la plus petite distance entre deux notes (une case sur le clavier)</li>
+                    <li>• <strong>Ton</strong> : deux demi-tons (deux cases sur le clavier)</li>
+                  </ul>
+
+                  <h5 className="font-medium text-foreground mt-3">Les demi-tons naturels</h5>
+                  <p className="text-muted-foreground">
+                    Sur le clavier, il y a des demi-tons "naturels" entre certaines touches blanches :
+                  </p>
+                  <ul className="text-muted-foreground space-y-1">
+                    <li>• Entre E et F (Mi et Fa)</li>
+                    <li>• Entre B et C (Si et Do)</li>
+                  </ul>
+                  <p className="text-muted-foreground text-sm">
+                    C'est pourquoi il n'y a pas de touches noires entre ces notes !
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -353,7 +401,7 @@ const ScaleDetail: React.FC = () => {
           {!showQuiz && (
             <Card>
               <CardHeader>
-                <CardTitle>{currentRoot} {scale.name}</CardTitle>
+                <CardTitle>{getScaleDisplayName(currentRoot)} {scale.name}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">

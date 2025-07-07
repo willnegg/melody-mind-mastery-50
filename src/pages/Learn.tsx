@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ChevronRight } from 'lucide-react';
-import { scaleTypes, chordTypes, cadences } from '@/constants/musicTheory';
+import { scaleTypes } from '@/constants/musicTheory';
 
 const Learn: React.FC = () => {
+  // Parcours progressif - seules les gammes sont disponibles au départ
   const learningCategories = [
     {
       title: 'Gammes',
@@ -16,40 +17,8 @@ const Learn: React.FC = () => {
         description: scale.description,
         link: `/scale/${key}`
       })),
-      color: 'bg-primary/10 text-primary border-primary/20'
-    },
-    {
-      title: 'Accords',
-      description: 'Apprenez l\'harmonie et les progressions d\'accords',
-      items: Object.entries(chordTypes).map(([key, chord]) => ({
-        id: key,
-        name: chord.name,
-        description: chord.description,
-        link: `/chord/${key}`
-      })),
-      color: 'bg-secondary/10 text-secondary border-secondary/20'
-    },
-    {
-      title: 'Cadences',
-      description: 'Comprenez les progressions harmoniques',
-      items: Object.entries(cadences).map(([key, cadence]) => ({
-        id: key,
-        name: cadence.name,
-        description: cadence.description,
-        link: `/cadence/${key}`
-      })),
-      color: 'bg-accent/50 text-accent-foreground border-accent'
-    },
-    {
-      title: 'Formation auditive',
-      description: 'Développez votre oreille musicale',
-      items: [
-        { id: 'intervals', name: 'Intervalles', description: 'Apprenez à identifier les intervalles entre les notes', link: '/ear-training/intervals' },
-        { id: 'chords', name: 'Accords', description: 'Reconnaissez les différents types d\'accords', link: '/ear-training/chords' },
-        { id: 'scales', name: 'Gammes', description: 'Identifiez les motifs de gammes à l\'oreille', link: '/ear-training/scales' },
-        { id: 'progressions', name: 'Progressions', description: 'Reconnaissez les progressions d\'accords', link: '/ear-training/progressions' }
-      ],
-      color: 'bg-muted text-muted-foreground border-muted-foreground/20'
+      color: 'bg-primary/10 text-primary border-primary/20',
+      isUnlocked: true
     }
   ];
 

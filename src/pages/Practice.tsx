@@ -36,8 +36,8 @@ const Practice: React.FC = () => {
     }
 
     toast({
-      title: "Great job!",
-      description: `You practiced ${currentName}`,
+      title: "Bien joué !",
+      description: `Vous avez pratiqué ${currentName}`,
     });
   };
 
@@ -66,9 +66,9 @@ const Practice: React.FC = () => {
     <div className="min-h-screen bg-background pb-20 p-4">
       <div className="max-w-4xl mx-auto">
         <header className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">Practice</h1>
+          <h1 className="text-3xl font-bold mb-2">Pratique</h1>
           <p className="text-muted-foreground">
-            Test your knowledge with interactive exercises
+            Testez vos connaissances avec des exercices interactifs
           </p>
         </header>
 
@@ -76,7 +76,7 @@ const Practice: React.FC = () => {
           {/* Controls */}
           <Card>
             <CardHeader>
-              <CardTitle>Practice Settings</CardTitle>
+              <CardTitle>Paramètres de pratique</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -87,14 +87,14 @@ const Practice: React.FC = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="scale">Scale</SelectItem>
-                      <SelectItem value="chord">Chord</SelectItem>
+                      <SelectItem value="scale">Gamme</SelectItem>
+                      <SelectItem value="chord">Accord</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Root Note</label>
+                  <label className="text-sm font-medium mb-2 block">Note fondamentale</label>
                   <Select value={rootNote} onValueChange={setRootNote}>
                     <SelectTrigger>
                       <SelectValue />
@@ -109,7 +109,7 @@ const Practice: React.FC = () => {
 
                 {practiceType === 'scale' ? (
                   <div>
-                    <label className="text-sm font-medium mb-2 block">Scale Type</label>
+                    <label className="text-sm font-medium mb-2 block">Type de gamme</label>
                     <Select value={scaleType} onValueChange={(value: keyof typeof scaleTypes) => setScaleType(value)}>
                       <SelectTrigger>
                         <SelectValue />
@@ -123,7 +123,7 @@ const Practice: React.FC = () => {
                   </div>
                 ) : (
                   <div>
-                    <label className="text-sm font-medium mb-2 block">Chord Type</label>
+                    <label className="text-sm font-medium mb-2 block">Type d'accord</label>
                     <Select value={chordType} onValueChange={(value: keyof typeof chordTypes) => setChordType(value)}>
                       <SelectTrigger>
                         <SelectValue />
@@ -139,7 +139,7 @@ const Practice: React.FC = () => {
 
                 <div className="flex flex-col justify-end">
                   <Button onClick={generateRandomChallenge} variant="outline">
-                    Random Challenge
+                    Défi aléatoire
                   </Button>
                 </div>
               </div>
@@ -150,17 +150,17 @@ const Practice: React.FC = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
-                <span>Current Challenge</span>
+                <span>Défi actuel</span>
                 <Badge variant="secondary">{currentName}</Badge>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="text-center">
                 <p className="text-lg font-medium mb-2">
-                  Play the notes for: <span className="text-primary">{currentName}</span>
+                  Jouez les notes pour : <span className="text-primary">{currentName}</span>
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  Try to figure out the notes, then click "Show Answer" to see if you got it right!
+                  Essayez de trouver les notes, puis cliquez sur "Montrer la réponse" pour voir si vous avez trouvé !
                 </p>
               </div>
 
@@ -175,7 +175,7 @@ const Practice: React.FC = () => {
               <div className="flex justify-center gap-4">
                 {!showAnswer ? (
                   <Button onClick={handleShowAnswer} size="lg">
-                    Show Answer
+                    Montrer la réponse
                   </Button>
                 ) : (
                   <div className="flex gap-4">
@@ -192,7 +192,7 @@ const Practice: React.FC = () => {
                 )}
                 
                 <Button onClick={handleReset} variant="outline" size="lg">
-                  Reset
+                  Recommencer
                 </Button>
               </div>
             </CardContent>

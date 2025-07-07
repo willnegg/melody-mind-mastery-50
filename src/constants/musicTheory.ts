@@ -4,79 +4,79 @@ export const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#'
 
 export const scaleTypes = {
   major: {
-    name: 'Major',
+    name: 'Majeure',
     intervals: [0, 2, 4, 5, 7, 9, 11],
-    description: 'The most common scale in Western music, bright and happy sounding.',
+    description: 'La gamme la plus courante en musique occidentale, brillante et joyeuse.',
     formula: 'W-W-H-W-W-W-H'
   },
   minor: {
-    name: 'Natural Minor',
+    name: 'Mineure naturelle',
     intervals: [0, 2, 3, 5, 7, 8, 10],
-    description: 'The natural minor scale, dark and melancholic.',
+    description: 'La gamme mineure naturelle, sombre et mélancolique.',
     formula: 'W-H-W-W-H-W-W'
   },
   pentatonic: {
-    name: 'Pentatonic',
+    name: 'Pentatonique',
     intervals: [0, 2, 4, 7, 9],
-    description: 'A 5-note scale used in many musical traditions.',
+    description: 'Une gamme de 5 notes utilisée dans de nombreuses traditions musicales.',
     formula: 'W-W-WH-W-WH'
   },
   blues: {
     name: 'Blues',
     intervals: [0, 3, 5, 6, 7, 10],
-    description: 'The blues scale with the characteristic blue notes.',
-    formula: 'Minor pentatonic + ♭5'
+    description: 'La gamme blues avec les notes bleues caractéristiques.',
+    formula: 'Pentatonique mineure + ♭5'
   },
   dorian: {
-    name: 'Dorian',
+    name: 'Dorien',
     intervals: [0, 2, 3, 5, 7, 9, 10],
-    description: 'A modal scale with a jazzy, sophisticated sound.',
+    description: 'Un mode avec un son jazzy et sophistiqué.',
     formula: 'W-H-W-W-W-H-W'
   }
 };
 
 export const chordTypes = {
   major: {
-    name: 'Major',
+    name: 'Majeur',
     intervals: [0, 4, 7],
     symbol: '',
-    description: 'Bright and stable, the foundation of Western harmony.'
+    description: 'Brillant et stable, la base de l\'harmonie occidentale.'
   },
   minor: {
-    name: 'Minor',
+    name: 'Mineur',
     intervals: [0, 3, 7],
     symbol: 'm',
-    description: 'Darker and more emotional than major chords.'
+    description: 'Plus sombre et émotionnel que les accords majeurs.'
   },
   diminished: {
-    name: 'Diminished',
+    name: 'Diminué',
     intervals: [0, 3, 6],
     symbol: '°',
-    description: 'Tense and unstable, often used as passing chords.'
+    description: 'Tendu et instable, souvent utilisé comme accord de passage.'
   },
   augmented: {
-    name: 'Augmented',
+    name: 'Augmenté',
     intervals: [0, 4, 8],
     symbol: '+',
-    description: 'Mysterious and unresolved, creates tension.'
+    description: 'Mystérieux et non résolu, crée de la tension.'
   },
   major7: {
-    name: 'Major 7th',
+    name: 'Majeur 7e',
     intervals: [0, 4, 7, 11],
     symbol: 'maj7',
-    description: 'Sophisticated and jazzy, adds color to progressions.'
+    description: 'Sophistiqué et jazzy, ajoute de la couleur aux progressions.'
   },
   dominant7: {
-    name: 'Dominant 7th',
+    name: 'Dominante 7e',
     intervals: [0, 4, 7, 10],
     symbol: '7',
-    description: 'Strong tendency to resolve, fundamental in blues and jazz.'
+    description: 'Forte tendance à résoudre, fondamental dans le blues et le jazz.'
   },
   minor7: {
-    name: 'Minor 7th',
+    name: 'Mineur 7e',
     intervals: [0, 3, 7, 10],
     symbol: 'm7',
-    description: 'Smooth and mellow, common in jazz and R&B.'
+    description: 'Doux et moelleux, courant dans le jazz et la R&B.'
   }
 };
 
@@ -97,34 +97,34 @@ export const intervals = {
 
 export const cadences = {
   perfect: {
-    name: 'Perfect Cadence',
+    name: 'Cadence parfaite',
     progression: ['V', 'I'],
-    description: 'The strongest cadence, creates a sense of resolution.',
-    example: 'G → C in C major'
+    description: 'La cadence la plus forte, crée un sentiment de résolution.',
+    example: 'Sol → Do en Do majeur'
   },
   plagal: {
-    name: 'Plagal Cadence',
+    name: 'Cadence plagale',
     progression: ['IV', 'I'],
-    description: 'The "Amen" cadence, softer than perfect cadence.',
-    example: 'F → C in C major'
+    description: 'La cadence "Amen", plus douce que la cadence parfaite.',
+    example: 'Fa → Do en Do majeur'
   },
   imperfect: {
-    name: 'Imperfect Cadence',
+    name: 'Cadence imparfaite',
     progression: ['I', 'V'],
-    description: 'Creates expectation and forward motion.',
-    example: 'C → G in C major'
+    description: 'Crée de l\'attente et un mouvement vers l\'avant.',
+    example: 'Do → Sol en Do majeur'
   },
   deceptive: {
-    name: 'Deceptive Cadence',
+    name: 'Cadence rompue',
     progression: ['V', 'vi'],
-    description: 'Surprises the ear by not resolving as expected.',
-    example: 'G → Am in C major'
+    description: 'Surprend l\'oreille en ne résolvant pas comme attendu.',
+    example: 'Sol → La m en Do majeur'
   },
   half: {
-    name: 'Half Cadence',
+    name: 'Demi-cadence',
     progression: ['I', 'V'],
-    description: 'Ends on V, creating a question-like effect.',
-    example: 'C → G in C major'
+    description: 'Se termine sur V, créant un effet interrogatif.',
+    example: 'Do → Sol en Do majeur'
   }
 };
 

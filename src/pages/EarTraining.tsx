@@ -13,36 +13,36 @@ const EarTraining: React.FC = () => {
   const trainingTypes = [
     {
       id: 'intervals',
-      title: 'Intervals',
-      description: 'Learn to identify the distance between two notes',
+      title: 'Intervalles',
+      description: 'Apprenez à identifier la distance entre deux notes',
       tips: [
-        'Start with perfect fifths and octaves',
-        'Use reference songs for each interval',
-        'Practice ascending and descending intervals'
+        'Commencez par les quintes justes et les octaves',
+        'Utilisez des chansons de référence pour chaque intervalle',
+        'Pratiquez les intervalles ascendants et descendants'
       ],
       color: 'bg-primary/10 text-primary border-primary/20',
       score: earTraining.intervals
     },
     {
       id: 'chords',
-      title: 'Chords',
-      description: 'Recognize major, minor, and extended chords',
+      title: 'Accords',
+      description: 'Reconnaissez les accords majeurs, mineurs et étendus',
       tips: [
-        'Focus on the quality of the third',
-        'Listen for tension and resolution',
-        'Practice with different inversions'
+        'Concentrez-vous sur la qualité de la tierce',
+        'Écoutez la tension et la résolution',
+        'Pratiquez avec différents renversements'
       ],
       color: 'bg-secondary/10 text-secondary border-secondary/20',
       score: earTraining.chords
     },
     {
       id: 'scales',
-      title: 'Scales',
-      description: 'Identify different scale patterns and modes',
+      title: 'Gammes',
+      description: 'Identifiez différents motifs de gammes et modes',
       tips: [
-        'Listen for the characteristic intervals',
-        'Pay attention to the tonic note',
-        'Compare major vs minor qualities'
+        'Écoutez les intervalles caractéristiques',
+        'Portez attention à la note tonique',
+        'Comparez les qualités majeure vs mineure'
       ],
       color: 'bg-accent/50 text-accent-foreground border-accent',
       score: earTraining.scales
@@ -50,11 +50,11 @@ const EarTraining: React.FC = () => {
     {
       id: 'progressions',
       title: 'Progressions',
-      description: 'Recognize common chord progressions',
+      description: 'Reconnaissez les progressions d\'accords courantes',
       tips: [
-        'Start with ii-V-I progressions',
-        'Listen for the bass line movement',
-        'Practice in different keys'
+        'Commencez par les progressions ii-V-I',
+        'Écoutez le mouvement de la ligne de basse',
+        'Pratiquez dans différentes tonalités'
       ],
       color: 'bg-muted text-muted-foreground border-muted-foreground/20',
       score: earTraining.progressions
@@ -69,9 +69,9 @@ const EarTraining: React.FC = () => {
     <div className="min-h-screen bg-background pb-20 p-4">
       <div className="max-w-4xl mx-auto">
         <header className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">Ear Training</h1>
+          <h1 className="text-3xl font-bold mb-2">Formation auditive</h1>
           <p className="text-muted-foreground">
-            Develop your musical hearing with interactive exercises
+            Développez votre oreille musicale avec des exercices interactifs
           </p>
         </header>
 
@@ -95,19 +95,19 @@ const EarTraining: React.FC = () => {
                     <div>
                       <ProgressBar 
                         progress={scorePercentage / 100}
-                        label="Best Score"
+                        label="Meilleur score"
                       />
                       <p className="text-xs text-muted-foreground mt-1">
                         {type.score.score}/{type.score.totalQuestions} correct
                         {type.score.lastAttempt && (
-                          <span> • Last attempt: {new Date(type.score.lastAttempt).toLocaleDateString()}</span>
+                          <span> • Dernière tentative : {new Date(type.score.lastAttempt).toLocaleDateString()}</span>
                         )}
                       </p>
                     </div>
                   )}
 
                   <div>
-                    <h4 className="text-sm font-medium mb-2">Tips:</h4>
+                    <h4 className="text-sm font-medium mb-2">Conseils :</h4>
                     <ul className="text-sm text-muted-foreground space-y-1">
                       {type.tips.map((tip, index) => (
                         <li key={index} className="flex items-start">
@@ -120,7 +120,7 @@ const EarTraining: React.FC = () => {
 
                   <Link to={`/ear-training/${type.id}`} className="block">
                     <Button className="w-full">
-                      Start Training
+                      Commencer l'entraînement
                       <ChevronRight className="h-4 w-4 ml-2" />
                     </Button>
                   </Link>

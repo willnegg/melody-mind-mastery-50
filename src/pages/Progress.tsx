@@ -47,26 +47,26 @@ const Progress: React.FC = () => {
 
   const stats = [
     {
-      title: 'Current Streak',
+      title: 'Série actuelle',
       value: streakDays,
-      unit: streakDays === 1 ? 'day' : 'days',
+      unit: streakDays === 1 ? 'jour' : 'jours',
       color: 'text-primary'
     },
     {
-      title: 'Overall Progress',
+      title: 'Progression globale',
       value: completionPercentage,
       unit: '%',
       color: 'text-secondary'
     },
     {
-      title: 'Practice Sessions',
+      title: 'Sessions de pratique',
       value: totalPracticeTime,
       unit: 'sessions',
       color: 'text-accent-foreground'
     },
     {
-      title: 'Last Practice',
-      value: lastPracticeDate ? new Date(lastPracticeDate).toLocaleDateString() : 'Never',
+      title: 'Dernière pratique',
+      value: lastPracticeDate ? new Date(lastPracticeDate).toLocaleDateString() : 'Jamais',
       unit: '',
       color: 'text-muted-foreground'
     }
@@ -74,19 +74,19 @@ const Progress: React.FC = () => {
 
   const categoryProgress = [
     {
-      title: 'Scales',
+      title: 'Gammes',
       completed: scalesProgress.completed,
       total: scalesProgress.total,
       color: 'from-primary to-primary/60'
     },
     {
-      title: 'Chords',
+      title: 'Accords',
       completed: chordsProgress.completed,
       total: chordsProgress.total,
       color: 'from-secondary to-secondary/60'
     },
     {
-      title: 'Ear Training',
+      title: 'Formation auditive',
       completed: earTrainingAverage,
       total: 100,
       color: 'from-accent to-accent/60',
@@ -100,7 +100,7 @@ const Progress: React.FC = () => {
       .sort((a, b) => new Date(b[1].lastPracticed).getTime() - new Date(a[1].lastPracticed).getTime())
       .slice(0, 5)
       .map(([id, data]) => ({
-        type: 'Scale',
+        type: 'Gamme',
         name: id.replace('-', ' '),
         date: data.lastPracticed,
         times: data.timesCompleted
@@ -110,7 +110,7 @@ const Progress: React.FC = () => {
       .sort((a, b) => new Date(b[1].lastPracticed).getTime() - new Date(a[1].lastPracticed).getTime())
       .slice(0, 5)
       .map(([id, data]) => ({
-        type: 'Chord',
+        type: 'Accord',
         name: id.replace('-', ' '),
         date: data.lastPracticed,
         times: data.timesCompleted
@@ -121,9 +121,9 @@ const Progress: React.FC = () => {
     <div className="min-h-screen bg-background pb-20 p-4">
       <div className="max-w-4xl mx-auto">
         <header className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">Your Progress</h1>
+          <h1 className="text-3xl font-bold mb-2">Votre progression</h1>
           <p className="text-muted-foreground">
-            Track your music theory learning journey
+            Suivez votre parcours d'apprentissage de la théorie musicale
           </p>
         </header>
 
@@ -131,7 +131,7 @@ const Progress: React.FC = () => {
           {/* Stats Overview */}
           <Card>
             <CardHeader>
-              <CardTitle>Overview</CardTitle>
+              <CardTitle>Vue d'ensemble</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -152,7 +152,7 @@ const Progress: React.FC = () => {
           {/* Category Progress */}
           <Card>
             <CardHeader>
-              <CardTitle>Progress by Category</CardTitle>
+              <CardTitle>Progression par catégorie</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               {categoryProgress.map((category, index) => (
@@ -178,7 +178,7 @@ const Progress: React.FC = () => {
           {/* Ear Training Details */}
           <Card>
             <CardHeader>
-              <CardTitle>Ear Training Scores</CardTitle>
+              <CardTitle>Scores de formation auditive</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -189,15 +189,15 @@ const Progress: React.FC = () => {
                       <Badge variant="secondary">
                         {score.totalQuestions > 0 
                           ? `${((score.score / score.totalQuestions) * 100).toFixed(0)}%`
-                          : 'Not started'
+                          : 'Pas commencé'
                         }
                       </Badge>
                     </div>
                     {score.totalQuestions > 0 && (
                       <div className="text-sm text-muted-foreground">
-                        <div>Best: {score.score}/{score.totalQuestions} correct</div>
+                        <div>Meilleur : {score.score}/{score.totalQuestions} correct</div>
                         {score.lastAttempt && (
-                          <div>Last: {new Date(score.lastAttempt).toLocaleDateString()}</div>
+                          <div>Dernier : {new Date(score.lastAttempt).toLocaleDateString()}</div>
                         )}
                       </div>
                     )}
@@ -211,7 +211,7 @@ const Progress: React.FC = () => {
           {recentActivity.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
+                <CardTitle>Activité récente</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
@@ -225,7 +225,7 @@ const Progress: React.FC = () => {
                       </div>
                       <div className="text-right text-sm text-muted-foreground">
                         <div>{new Date(activity.date).toLocaleDateString()}</div>
-                        <div>{activity.times}x practiced</div>
+                        <div>{activity.times}x pratiqué</div>
                       </div>
                     </div>
                   ))}

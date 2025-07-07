@@ -8,8 +8,8 @@ import { scaleTypes, chordTypes, cadences } from '@/constants/musicTheory';
 const Learn: React.FC = () => {
   const learningCategories = [
     {
-      title: 'Scales',
-      description: 'Master the fundamental patterns of music',
+      title: 'Gammes',
+      description: 'Maîtrisez les motifs fondamentaux de la musique',
       items: Object.entries(scaleTypes).map(([key, scale]) => ({
         id: key,
         name: scale.name,
@@ -19,8 +19,8 @@ const Learn: React.FC = () => {
       color: 'bg-primary/10 text-primary border-primary/20'
     },
     {
-      title: 'Chords',
-      description: 'Learn harmony and chord progressions',
+      title: 'Accords',
+      description: 'Apprenez l\'harmonie et les progressions d\'accords',
       items: Object.entries(chordTypes).map(([key, chord]) => ({
         id: key,
         name: chord.name,
@@ -31,7 +31,7 @@ const Learn: React.FC = () => {
     },
     {
       title: 'Cadences',
-      description: 'Understand harmonic progressions',
+      description: 'Comprenez les progressions harmoniques',
       items: Object.entries(cadences).map(([key, cadence]) => ({
         id: key,
         name: cadence.name,
@@ -41,13 +41,13 @@ const Learn: React.FC = () => {
       color: 'bg-accent/50 text-accent-foreground border-accent'
     },
     {
-      title: 'Ear Training',
-      description: 'Develop your musical hearing',
+      title: 'Formation auditive',
+      description: 'Développez votre oreille musicale',
       items: [
-        { id: 'intervals', name: 'Intervals', description: 'Learn to identify intervals between notes', link: '/ear-training/intervals' },
-        { id: 'chords', name: 'Chords', description: 'Recognize different chord types', link: '/ear-training/chords' },
-        { id: 'scales', name: 'Scales', description: 'Identify scale patterns by ear', link: '/ear-training/scales' },
-        { id: 'progressions', name: 'Progressions', description: 'Recognize chord progressions', link: '/ear-training/progressions' }
+        { id: 'intervals', name: 'Intervalles', description: 'Apprenez à identifier les intervalles entre les notes', link: '/ear-training/intervals' },
+        { id: 'chords', name: 'Accords', description: 'Reconnaissez les différents types d\'accords', link: '/ear-training/chords' },
+        { id: 'scales', name: 'Gammes', description: 'Identifiez les motifs de gammes à l\'oreille', link: '/ear-training/scales' },
+        { id: 'progressions', name: 'Progressions', description: 'Reconnaissez les progressions d\'accords', link: '/ear-training/progressions' }
       ],
       color: 'bg-muted text-muted-foreground border-muted-foreground/20'
     }
@@ -57,9 +57,9 @@ const Learn: React.FC = () => {
     <div className="min-h-screen bg-background pb-20 p-4">
       <div className="max-w-4xl mx-auto">
         <header className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">Learn Music Theory</h1>
+          <h1 className="text-3xl font-bold mb-2">Apprendre la théorie musicale</h1>
           <p className="text-muted-foreground">
-            Explore the fundamentals of music theory through interactive lessons
+            Explorez les fondamentaux de la théorie musicale à travers des leçons interactives
           </p>
         </header>
 
@@ -70,7 +70,7 @@ const Learn: React.FC = () => {
                 <CardTitle className="flex items-center justify-between">
                   {category.title}
                   <Badge variant="outline" className={category.color}>
-                    {category.items.length} topics
+                    {category.items.length} sujets
                   </Badge>
                 </CardTitle>
                 <p className="text-sm text-muted-foreground">{category.description}</p>

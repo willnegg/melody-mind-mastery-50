@@ -42,7 +42,7 @@ const ScaleDisplay: React.FC<ScaleDisplayProps> = ({
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
-          <h4 className="text-sm font-medium mb-2">Notes:</h4>
+          <h4 className="text-sm font-medium mb-2">Notes :</h4>
           <div className="flex flex-wrap gap-2">
             {scaleNotes.map((note, index) => (
               <Badge key={index} variant="outline">
@@ -53,7 +53,7 @@ const ScaleDisplay: React.FC<ScaleDisplayProps> = ({
         </div>
 
         <div>
-          <h4 className="text-sm font-medium mb-2">On Piano:</h4>
+          <h4 className="text-sm font-medium mb-2">Au piano :</h4>
           <div className="overflow-x-auto">
             <PianoKeyboard 
               octaves={2}
@@ -64,7 +64,7 @@ const ScaleDisplay: React.FC<ScaleDisplayProps> = ({
         </div>
 
         <div>
-          <h4 className="text-sm font-medium mb-2">Description:</h4>
+          <h4 className="text-sm font-medium mb-2">Description :</h4>
           <p className="text-sm text-muted-foreground">{scale.description}</p>
         </div>
       </CardContent>

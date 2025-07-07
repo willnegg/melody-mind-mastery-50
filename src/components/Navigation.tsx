@@ -5,10 +5,10 @@ import { BookOpen, Calendar, Headphones, Circle } from 'lucide-react';
 
 const Navigation: React.FC = () => {
   const navItems = [
-    { to: '/learn', icon: BookOpen, label: 'Learn' },
-    { to: '/practice', icon: Calendar, label: 'Practice' },
-    { to: '/ear-training', icon: Headphones, label: 'Ear Training' },
-    { to: '/progress', icon: Circle, label: 'Progress' },
+    { to: '/learn', icon: BookOpen, label: 'Apprendre' },
+    { to: '/practice', icon: Calendar, label: 'Pratiquer' },
+    { to: '/ear-training', icon: Headphones, label: 'Oreille' },
+    { to: '/progress', icon: Circle, label: 'Progrès' },
   ];
 
   return (

@@ -56,16 +56,17 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
       });
 
       // Générer les touches noires aux bonnes positions
-      const blackKeyData = [
-        { note: 'C#', whiteKeyIndex: 0.5 }, // Entre C et D
-        { note: 'D#', whiteKeyIndex: 1.5 }, // Entre D et E
-        { note: 'F#', whiteKeyIndex: 3.5 }, // Entre F et G
-        { note: 'G#', whiteKeyIndex: 4.5 }, // Entre G et A
-        { note: 'A#', whiteKeyIndex: 5.5 }, // Entre A et B
+      const blackKeyPositions = [
+        { note: 'C#', afterWhiteKey: 0 }, // Après C (index 0)
+        { note: 'D#', afterWhiteKey: 1 }, // Après D (index 1)
+        { note: 'F#', afterWhiteKey: 3 }, // Après F (index 3)
+        { note: 'G#', afterWhiteKey: 4 }, // Après G (index 4)
+        { note: 'A#', afterWhiteKey: 5 }, // Après A (index 5)
       ];
 
-      blackKeyData.forEach(({ note, whiteKeyIndex }) => {
+      blackKeyPositions.forEach(({ note, afterWhiteKey }) => {
         const noteWithOctave = `${note}${octave + 4}`;
+        const whiteKeyPosition = octave * 7 + afterWhiteKey;
         
         blackKeys.push(
           <div
@@ -74,11 +75,10 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
               'absolute bg-gray-800 border border-gray-700 rounded-b-md cursor-pointer transition-all duration-150',
               'hover:bg-gray-700 active:bg-gray-600',
               'flex items-end justify-center pb-1',
-              highlightedNotes.includes(note) && 'bg-secondary text-secondary-foreground hover:bg-secondary/90',
               'h-20 w-5 md:w-6 z-10'
             )}
             style={{ 
-              left: `${(octave * 7 + whiteKeyIndex) * 2}rem`,
+              left: `calc(${whiteKeyPosition * 2}rem + 1rem + ${whiteKeyPosition * 0}px)`,
               transform: 'translateX(-50%)'
             }}
             onClick={() => {

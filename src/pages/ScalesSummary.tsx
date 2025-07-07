@@ -8,12 +8,12 @@ const ScalesSummary: React.FC = () => {
   // Gammes de base (débloquées)
   const basicScales = [
     { id: 'major', name: 'Majeure', isUnlocked: true },
-    { id: 'minor', name: 'Mineure', isUnlocked: true },
-    { id: 'pentatonic', name: 'Pentatonique', isUnlocked: true }
+    { id: 'minor', name: 'Mineure', isUnlocked: true }
   ];
 
   // Modes avancés (verrouillés)
   const advancedScales = [
+    { id: 'pentatonic', name: 'Pentatonique', isUnlocked: false },
     { id: 'blues', name: 'Blues', isUnlocked: false },
     { id: 'dorian', name: 'Dorien', isUnlocked: false }
   ];

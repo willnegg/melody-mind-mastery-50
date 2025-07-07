@@ -295,73 +295,14 @@ const ScaleDetail: React.FC = () => {
         </header>
 
         <div className="space-y-6">
-          {/* Section éducative */}
+          {/* Construction d'une gamme majeure */}
           {!showQuiz && (
             <Card>
               <CardHeader>
-                <CardTitle>🎹 Les bases du piano</CardTitle>
+                <CardTitle>🎵 Construction d'une gamme majeure</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="prose prose-sm max-w-none">
-                  <p className="font-medium text-foreground">
-                    Bienvenue dans ta première leçon ! Le piano peut sembler impressionnant au début, mais en réalité, son clavier suit un schéma très simple et logique. Une fois que tu comprends comment il est construit, tout devient plus clair.
-                  </p>
-                  
-                  <h4 className="font-semibold text-foreground mt-4 mb-2">Les touches</h4>
-                  <p className="text-muted-foreground">
-                    Regarde bien le clavier :
-                  </p>
-                  <ul className="text-muted-foreground space-y-1">
-                    <li>• Les touches blanches sont les notes principales.</li>
-                    <li>• Les touches noires sont un peu en retrait. Ce sont les altérations : elles servent à faire des dièses (♯) ou des bémols (♭).</li>
-                  </ul>
-
-                  <h4 className="font-semibold text-foreground mt-4 mb-2">Le motif qui se répète</h4>
-                  <p className="text-muted-foreground">
-                    Les touches noires ne sont pas placées au hasard. Elles sont groupées par 2, puis par 3 et se répètent tout le long du clavier.
-                    Ce motif est super important : il permet de se repérer facilement, même quand on débute.
-                  </p>
-
-                  <h4 className="font-semibold text-foreground mt-4 mb-2">Comment repérer les notes</h4>
-                  <div className="text-muted-foreground space-y-2">
-                    <p><strong>Le groupe de 2 touches noires :</strong></p>
-                    <ul className="space-y-1">
-                      <li>• La touche blanche juste à gauche de ce groupe, c'est C en notation internationale (ou Do en français).</li>
-                      <li>• Ensuite viennent D (Ré) et E (Mi), juste à droite.</li>
-                    </ul>
-                    
-                    <p><strong>Le groupe de 3 touches noires :</strong></p>
-                    <ul className="space-y-1">
-                      <li>• La touche blanche juste à gauche de ce groupe, c'est F (Fa).</li>
-                      <li>• Puis on a G (Sol), A (La) et B (Si).</li>
-                    </ul>
-                  </div>
-
-                  <h4 className="font-semibold text-foreground mt-4 mb-2">Les noms des notes</h4>
-                  <p className="text-muted-foreground">
-                    Avant d'aller plus loin, il faut bien connaître le nom des 7 notes.
-                    Dès maintenant, apprend ces notes par cœur parce qu'en musique, les partitions, les grilles, les logiciels ou sur les vidéos YouTube que tu regardes, on retrouve majoritairement cette notation internationale.
-                  </p>
-                  
-                  <div className="grid grid-cols-7 gap-2 my-4 p-4 bg-muted rounded-lg">
-                    <div className="text-center"><strong>C</strong><br/>Do</div>
-                    <div className="text-center"><strong>D</strong><br/>Ré</div>
-                    <div className="text-center"><strong>E</strong><br/>Mi</div>
-                    <div className="text-center"><strong>F</strong><br/>Fa</div>
-                    <div className="text-center"><strong>G</strong><br/>Sol</div>
-                    <div className="text-center"><strong>A</strong><br/>La</div>
-                    <div className="text-center"><strong>B</strong><br/>Si</div>
-                  </div>
-
-                  <h4 className="font-semibold text-foreground mt-4 mb-2">À retenir :</h4>
-                  <ul className="text-muted-foreground space-y-1">
-                    <li>• Le clavier est organisé en motifs qui se répètent.</li>
-                    <li>• C est toujours juste à gauche du groupe de 2 touches noires.</li>
-                    <li>• F est toujours juste à gauche du groupe de 3 touches noires.</li>
-                    <li>• Tu connais désormais le nom des 7 notes, en français et en anglais.</li>
-                  </ul>
-
-                  <h4 className="font-semibold text-foreground mt-4 mb-2">🎵 Construction d'une gamme majeure</h4>
                   <p className="text-muted-foreground">
                     Maintenant que tu connais les notes, voyons comment construire une gamme majeure. Toutes les gammes majeures suivent la même formule en <strong>tons</strong> et <strong>demi-tons</strong> :
                   </p>

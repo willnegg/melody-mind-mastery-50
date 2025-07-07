@@ -5,6 +5,15 @@ import { ChevronRight, ArrowLeft, Lock } from 'lucide-react';
 import { scaleTypes } from '@/constants/musicTheory';
 
 const ScalesSummary: React.FC = () => {
+  // Ajout du module "Les bases du piano"
+  const pianoBasics = {
+    id: 'piano-basics',
+    name: 'Les bases du piano',
+    description: 'Commencez par apprendre les fondamentaux',
+    isUnlocked: true,
+    isPreliminary: true
+  };
+
   // Gammes de base (débloquées)
   const basicScales = [
     { id: 'major', name: 'Majeure', isUnlocked: true },
@@ -35,36 +44,62 @@ const ScalesSummary: React.FC = () => {
           </p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Gammes de base */}
-          {basicScales.map((scale) => (
+        <div className="space-y-6">
+          {/* Module préliminaire - Les bases du piano */}
+          <div>
+            <h2 className="text-xl font-semibold mb-4 text-primary">📚 Module préliminaire</h2>
             <Link
-              key={scale.id}
-              to={`/scale/${scale.id}`}
-              className="group p-4 rounded-lg bg-card border border-border hover:border-primary/50 transition-all duration-200 hover:bg-accent/50"
+              to="/piano-basics"
+              className="group p-6 rounded-lg bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 hover:border-primary/40 transition-all duration-200 hover:bg-primary/10 block"
             >
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <h3 className="font-medium mb-1 group-hover:text-primary transition-colors">
-                    {scale.name}
+                  <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">
+                    🎹 {pianoBasics.name}
                   </h3>
+                  <p className="text-muted-foreground text-sm">
+                    {pianoBasics.description}
+                  </p>
                 </div>
-                <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors ml-2" />
+                <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors ml-4" />
               </div>
             </Link>
-          ))}
-          
-          {/* Modes avancés (verrouillés) */}
-          {advancedScales.map((scale) => (
-            <div
-              key={scale.id}
-              className="p-4 rounded-lg bg-card border border-border opacity-60"
-            >
-              <div className="flex items-center justify-center">
-                <Lock className="h-6 w-6 text-muted-foreground" />
-              </div>
+          </div>
+
+          {/* Gammes principales */}
+          <div>
+            <h2 className="text-xl font-semibold mb-4">🎼 Gammes principales</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {basicScales.map((scale) => (
+                <Link
+                  key={scale.id}
+                  to={`/scale/${scale.id}`}
+                  className="group p-4 rounded-lg bg-card border border-border hover:border-primary/50 transition-all duration-200 hover:bg-accent/50"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <h3 className="font-medium mb-1 group-hover:text-primary transition-colors">
+                        {scale.name}
+                      </h3>
+                    </div>
+                    <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors ml-2" />
+                  </div>
+                </Link>
+              ))}
+              
+              {/* Modes avancés (verrouillés) */}
+              {advancedScales.map((scale) => (
+                <div
+                  key={scale.id}
+                  className="p-4 rounded-lg bg-card border border-border opacity-60"
+                >
+                  <div className="flex items-center justify-center">
+                    <Lock className="h-6 w-6 text-muted-foreground" />
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </div>

@@ -3,7 +3,15 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
+import Navigation from "./components/Navigation";
+import Learn from "./pages/Learn";
+import Practice from "./pages/Practice";
+import EarTraining from "./pages/EarTraining";
+import Progress from "./pages/Progress";
+import ScaleDetail from "./pages/ScaleDetail";
+import ChordDetail from "./pages/ChordDetail";
+import CadenceDetail from "./pages/CadenceDetail";
+import EarTrainingExercise from "./pages/EarTrainingExercise";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -14,11 +22,21 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <div className="relative">
+          <Routes>
+            <Route path="/" element={<Learn />} />
+            <Route path="/learn" element={<Learn />} />
+            <Route path="/practice" element={<Practice />} />
+            <Route path="/ear-training" element={<EarTraining />} />
+            <Route path="/progress" element={<Progress />} />
+            <Route path="/scale/:id" element={<ScaleDetail />} />
+            <Route path="/chord/:id" element={<ChordDetail />} />
+            <Route path="/cadence/:id" element={<CadenceDetail />} />
+            <Route path="/ear-training/:type" element={<EarTrainingExercise />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Navigation />
+        </div>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

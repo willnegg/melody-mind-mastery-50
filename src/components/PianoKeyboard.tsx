@@ -18,23 +18,26 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
   className
 }) => {
   const { playNote, isLoaded } = useAudio();
+  const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+  const blackKeys = ['C#', 'D#', '', 'F#', 'G#', 'A#', ''];
 
   const renderKeys = () => {
-    const whiteKeys = [];
-    const blackKeys = [];
+    const keys = [];
     
     for (let octave = 0; octave < octaves; octave++) {
-      // Render white keys
-      for (let i = 0; i < 7; i++) {
-        const whiteNote = ['C', 'D', 'E', 'F', 'G', 'A', 'B'][i];
+      for (let i = 0; i < whiteKeys.length; i++) {
+        const whiteNote = whiteKeys[i];
+        const blackNote = blackKeys[i];
         const whiteNoteWithOctave = `${whiteNote}${octave + 4}`;
+        const blackNoteWithOctave = blackNote ? `${blackNote}${octave + 4}` : '';
 
-        whiteKeys.push(
+        // White key
+        keys.push(
           <div
             key={whiteNoteWithOctave}
             className={cn(
-              'relative bg-white border border-gray-300 rounded-b-md cursor-pointer transition-all duration-150',
-              'hover:bg-gray-50 active:bg-gray-100',
+              'relative bg-white border border-border rounded-b-md cursor-pointer transition-all duration-150',
+              'hover:bg-muted active:bg-accent',
               'flex items-end justify-center pb-2',
               highlightedNotes.includes(whiteNote) && 'bg-primary text-primary-foreground hover:bg-primary/90',
               'h-32 w-8 md:w-10'
@@ -51,64 +54,47 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
             )}
           </div>
         );
+
+        // Black key (if exists)
+        if (blackNote) {
+          keys.push(
+            <div
+              key={blackNoteWithOctave}
+              className={cn(
+                'absolute bg-gray-800 border border-gray-700 rounded-b-md cursor-pointer transition-all duration-150',
+                'hover:bg-gray-700 active:bg-gray-600',
+                'flex items-end justify-center pb-1',
+                highlightedNotes.includes(blackNote) && 'bg-secondary text-secondary-foreground hover:bg-secondary/90',
+                'h-20 w-5 md:w-6 z-10',
+                '-ml-3 md:-ml-3'
+              )}
+              style={{ 
+                left: `${(octave * 7 + i) * 32 + 20}px`,
+                transform: 'translateX(-50%)'
+              }}
+              onClick={() => {
+                if (isLoaded) playNote(blackNote, octave + 4);
+                onKeyPress?.(blackNote);
+              }}
+            >
+              {showLabels && (
+                <span className="text-xs font-medium text-white">
+                  {blackNote}
+                </span>
+              )}
+            </div>
+          );
+        }
       }
-
-      // Render black keys with correct positioning
-      const blackKeyPositions = [
-        { note: 'C#', position: 0.5 }, // Between C and D
-        { note: 'D#', position: 1.5 }, // Between D and E
-        // No black key between E and F
-        { note: 'F#', position: 3.5 }, // Between F and G
-        { note: 'G#', position: 4.5 }, // Between G and A
-        { note: 'A#', position: 5.5 }, // Between A and B
-        // No black key between B and C
-      ];
-
-      blackKeyPositions.forEach(({ note, position }) => {
-        const blackNoteWithOctave = `${note}${octave + 4}`;
-        // Utiliser la même largeur que les touches blanches pour le calcul
-        const whiteKeyWidth = 40; // md:w-10 = 40px
-        const leftPosition = (octave * 7 + position) * whiteKeyWidth;
-
-        blackKeys.push(
-          <div
-            key={blackNoteWithOctave}
-            className={cn(
-              'absolute bg-gray-800 border border-gray-700 rounded-b-md cursor-pointer transition-all duration-150',
-              'hover:bg-gray-700 active:bg-gray-600',
-              'flex items-end justify-center pb-1',
-              highlightedNotes.includes(note) && 'bg-secondary text-secondary-foreground hover:bg-secondary/90',
-              'h-20 w-6 z-10'
-            )}
-            style={{ 
-              left: `${leftPosition}px`,
-              transform: 'translateX(-50%)'
-            }}
-            onClick={() => {
-              if (isLoaded) playNote(note, octave + 4);
-              onKeyPress?.(note);
-            }}
-          >
-            {showLabels && (
-              <span className="text-xs font-medium text-white">
-                {note}
-              </span>
-            )}
-          </div>
-        );
-      });
     }
     
-    return { whiteKeys, blackKeys };
+    return keys;
   };
-
-  const { whiteKeys, blackKeys } = renderKeys();
 
   return (
     <div className={cn('relative flex bg-background p-4 rounded-lg border', className)}>
       <div className="relative flex gap-0">
-        {whiteKeys}
-        {blackKeys}
+        {renderKeys()}
       </div>
     </div>
   );

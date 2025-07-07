@@ -51,7 +51,7 @@ const ScaleDetail: React.FC = () => {
   // Fonction pour obtenir la signature de la gamme
   const getScaleSignature = (root: string) => {
     const signatures: Record<string, string> = {
-      'C': 'Aucune altération',
+      'C': '',
       'G': '1 dièse (F#)',
       'F': '1 bémol (Bb)',
       'D': '2 dièses (F#, C#)',
@@ -70,25 +70,54 @@ const ScaleDetail: React.FC = () => {
   // Questions de quiz dynamiques
   const getQuizQuestions = (): QuizQuestion[] => [
     {
-      question: `Combien y a-t-il de notes dans la gamme de ${currentRoot} majeur ?`,
+      question: `Combien y a-t-il de notes différentes dans la gamme de ${currentRoot} majeur ?`,
       answers: ['6 notes', '7 notes', '8 notes', '9 notes'],
       correctAnswer: 1
     },
     {
-      question: `Quelle est la première note de la gamme de ${currentRoot} majeur ?`,
+      question: `Quelle est la première note (tonique) de la gamme de ${currentRoot} majeur ?`,
       answers: [scaleNotes[1], currentRoot, scaleNotes[2], scaleNotes[3]],
       correctAnswer: 1
     },
     {
-      question: `Quelle est la cinquième note (dominante) de la gamme de ${currentRoot} majeur ?`,
+      question: `Quelle est la troisième note de la gamme de ${currentRoot} majeur ?`,
+      answers: [scaleNotes[1], scaleNotes[2], scaleNotes[3], scaleNotes[4]],
+      correctAnswer: 1
+    },
+    {
+      question: `Quelle est la cinquième note de la gamme de ${currentRoot} majeur ?`,
       answers: [scaleNotes[3], scaleNotes[4], scaleNotes[5], scaleNotes[6]],
       correctAnswer: 1
     },
     {
-      question: `${getScaleSignature(currentRoot)}. Cette gamme a :`,
-      answers: ['Aucune altération', 'Des dièses', 'Des bémols', 'Les deux'],
-      correctAnswer: currentRoot.includes('#') || ['F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb'].includes(currentRoot) ? 2 : 
-                   ['G', 'D', 'A', 'E', 'B'].includes(currentRoot) ? 1 : 0
+      question: `Quelle est la septième note de la gamme de ${currentRoot} majeur ?`,
+      answers: [scaleNotes[5], scaleNotes[6], currentRoot, scaleNotes[1]],
+      correctAnswer: 1
+    },
+    {
+      question: `Dans une gamme majeure, quels sont les demi-tons naturels ?`,
+      answers: ['Entre les degrés 1-2 et 4-5', 'Entre les degrés 3-4 et 7-8', 'Entre les degrés 2-3 et 6-7', 'Entre les degrés 1-3 et 5-7'],
+      correctAnswer: 1
+    },
+    {
+      question: `Combien de demi-tons y a-t-il entre la première et la troisième note ?`,
+      answers: ['1 demi-ton', '2 demi-tons', '3 demi-tons', '4 demi-tons'],
+      correctAnswer: 2
+    },
+    {
+      question: `La gamme majeure suit quelle structure en tons et demi-tons ?`,
+      answers: ['Ton-Ton-1/2Ton-Ton-Ton-Ton-1/2Ton', '1/2Ton-Ton-Ton-1/2Ton-Ton-Ton-Ton', 'Ton-1/2Ton-Ton-Ton-1/2Ton-Ton-Ton', 'Ton-Ton-Ton-1/2Ton-Ton-Ton-1/2Ton'],
+      correctAnswer: 0
+    },
+    {
+      question: `La deuxième note de la gamme de ${currentRoot} majeur est :`,
+      answers: [scaleNotes[0], scaleNotes[1], scaleNotes[2], scaleNotes[3]],
+      correctAnswer: 2
+    },
+    {
+      question: `Entre la septième note et l'octave, il y a :`,
+      answers: ['1 ton', '1 demi-ton', '1 ton et demi', '2 tons'],
+      correctAnswer: 1
     }
   ];
 
@@ -251,60 +280,42 @@ const ScaleDetail: React.FC = () => {
 
         <div className="space-y-6">
           {/* Gamme actuelle */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span>{currentRoot} {scale.name}</span>
-                <div className="flex items-center gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={handlePreviousScale}
-                    disabled={currentScaleIndex === 0 || !isCurrentScaleCompleted}
-                    title={!isCurrentScaleCompleted ? "Terminez cette gamme avant de naviguer" : ""}
-                  >
-                    <ArrowLeft className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={handleNextScale}
-                    disabled={currentScaleIndex === scaleProgression.length - 1 || !isCurrentScaleCompleted}
-                    title={!isCurrentScaleCompleted ? "Terminez cette gamme avant de naviguer" : ""}
-                  >
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium">{getScaleSignature(currentRoot)}</p>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {scaleNotes.map((note, index) => (
-                      <Badge 
-                        key={index} 
-                        variant={playedNotes.includes(note) ? "default" : "outline"}
-                        className="transition-colors"
-                      >
-                        {index + 1}. {note}
-                      </Badge>
-                    ))}
-                    <Badge variant="secondary">8. {currentRoot}</Badge>
+          {!showQuiz && (
+            <Card>
+              <CardHeader>
+                <CardTitle>{currentRoot} {scale.name}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    {getScaleSignature(currentRoot) && (
+                      <p className="font-medium mb-2">{getScaleSignature(currentRoot)}</p>
+                    )}
+                    <div className="flex flex-wrap gap-2">
+                      {scaleNotes.map((note, index) => (
+                        <Badge 
+                          key={index} 
+                          variant={playedNotes.includes(note) ? "default" : "outline"}
+                          className="transition-colors"
+                        >
+                          {index + 1}. {note}
+                        </Badge>
+                      ))}
+                      <Badge variant="secondary">8. {currentRoot}</Badge>
+                    </div>
                   </div>
+                  <Button
+                    variant="outline"
+                    onClick={handleListenScale}
+                    disabled={!isLoaded}
+                  >
+                    <Volume2 className="h-4 w-4 mr-2" />
+                    {isPlaying ? 'Stop' : 'Écouter la gamme'}
+                  </Button>
                 </div>
-                <Button
-                  variant="outline"
-                  onClick={handleListenScale}
-                  disabled={!isLoaded}
-                >
-                  <Volume2 className="h-4 w-4 mr-2" />
-                  {isPlaying ? 'Stop' : 'Écouter la gamme'}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Étapes d'apprentissage */}
           <Card>
@@ -390,32 +401,34 @@ const ScaleDetail: React.FC = () => {
           )}
 
           {/* Piano interactif */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Piano - Jouez les 7 notes de la gamme</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
-                <PianoKeyboard 
-                  octaves={2}
-                  highlightedNotes={scaleNotes}
-                  onKeyPress={handleNotePlay}
-                  showLabels={true}
-                />
-              </div>
-              <div className="mt-4 text-center">
-                <p className="text-sm text-muted-foreground mb-2">
-                  Notes jouées : {playedNotes.length}/{scaleNotes.length}
-                </p>
-                {allStepsCompleted && !isCurrentScaleCompleted && (
-                  <Button onClick={handleCompleteScale} className="mt-2">
-                    <CheckCircle className="h-4 w-4 mr-2" />
-                    Terminer cette gamme
-                  </Button>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+          {!showQuiz && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Piano - Jouez les 7 notes de la gamme</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <PianoKeyboard 
+                    octaves={2}
+                    highlightedNotes={scaleNotes}
+                    onKeyPress={handleNotePlay}
+                    showLabels={true}
+                  />
+                </div>
+                <div className="mt-4 text-center">
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Notes jouées : {playedNotes.length}/{scaleNotes.length}
+                  </p>
+                  {allStepsCompleted && !isCurrentScaleCompleted && (
+                    <Button onClick={handleCompleteScale} className="mt-2">
+                      <CheckCircle className="h-4 w-4 mr-2" />
+                      Terminer cette gamme
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Navigation */}
           <div className="flex justify-between">

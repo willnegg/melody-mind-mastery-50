@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { useAudio } from '@/hooks/useAudio';
@@ -18,8 +19,6 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
   className
 }) => {
   const { playNote, isLoaded } = useAudio();
-  const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-  const blackKeys = ['C#', 'D#', '', 'F#', 'G#', 'A#', ''];
 
   const renderKeys = () => {
     const whiteKeys = [];
@@ -55,18 +54,21 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
         );
       });
 
-      // Générer les touches noires aux bonnes positions
+      // Générer les touches noires centrées entre les bonnes touches blanches
       const blackKeyPositions = [
-        { note: 'C#', afterWhiteKey: 0 }, // Après C (index 0)
-        { note: 'D#', afterWhiteKey: 1 }, // Après D (index 1)
-        { note: 'F#', afterWhiteKey: 3 }, // Après F (index 3)
-        { note: 'G#', afterWhiteKey: 4 }, // Après G (index 4)
-        { note: 'A#', afterWhiteKey: 5 }, // Après A (index 5)
+        { note: 'C#', betweenWhiteKeys: [0, 1] }, // Entre C (0) et D (1)
+        { note: 'D#', betweenWhiteKeys: [1, 2] }, // Entre D (1) et E (2)
+        { note: 'F#', betweenWhiteKeys: [3, 4] }, // Entre F (3) et G (4)
+        { note: 'G#', betweenWhiteKeys: [4, 5] }, // Entre G (4) et A (5)
+        { note: 'A#', betweenWhiteKeys: [5, 6] }, // Entre A (5) et B (6)
       ];
 
-      blackKeyPositions.forEach(({ note, afterWhiteKey }) => {
+      blackKeyPositions.forEach(({ note, betweenWhiteKeys }) => {
         const noteWithOctave = `${note}${octave + 4}`;
-        const whiteKeyPosition = octave * 7 + afterWhiteKey;
+        const firstWhiteKeyIndex = octave * 7 + betweenWhiteKeys[0];
+        const secondWhiteKeyIndex = octave * 7 + betweenWhiteKeys[1];
+        // Position centrée entre les deux touches blanches
+        const centerPosition = (firstWhiteKeyIndex + secondWhiteKeyIndex) / 2;
         
         blackKeys.push(
           <div
@@ -78,7 +80,7 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
               'h-20 w-5 md:w-6 z-10'
             )}
             style={{ 
-              left: `calc(${whiteKeyPosition * 2}rem + 1rem + ${whiteKeyPosition * 0}px)`,
+              left: `${centerPosition * 2}rem`,
               transform: 'translateX(-50%)'
             }}
             onClick={() => {

@@ -86,7 +86,9 @@ export const useAudio = (): AudioHookReturn => {
 
       for (let i = 0; i < notes.length; i++) {
         setTimeout(() => {
-          const noteWithOctave = `${notes[i]}4`;
+          // Vérifier si la note contient déjà l'octave (ex: "C4") ou non (ex: "C")
+          const note = notes[i];
+          const noteWithOctave = /\d$/.test(note) ? note : `${note}4`;
           synth.triggerAttackRelease(noteWithOctave, '8n');
           
           if (i === notes.length - 1) {

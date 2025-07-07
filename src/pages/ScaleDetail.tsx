@@ -45,8 +45,8 @@ const ScaleDetail: React.FC = () => {
   const currentRoot = scaleProgression[currentScaleIndex];
   const scaleNotes = getScaleNotes(currentRoot, scaleType);
   
-  // Ajouter l'octave (8ème degré)
-  const completeScaleNotes = [...scaleNotes, currentRoot];
+  // Ajouter l'octave (8ème degré) - une octave plus haut
+  const completeScaleNotes = [...scaleNotes.map(note => `${note}4`), `${currentRoot}5`];
 
   // Fonction pour obtenir la signature de la gamme
   const getScaleSignature = (root: string) => {
@@ -162,7 +162,11 @@ const ScaleDetail: React.FC = () => {
       stopAll();
     } else {
       await playScale(completeScaleNotes);
-      setHasListened(true);
+      // Calculer le temps total de la gamme (nombre de notes * interval + durée de la dernière note)
+      const totalDuration = completeScaleNotes.length * 500 + 200; // 500ms par note + 200ms pour la dernière
+      setTimeout(() => {
+        setHasListened(true);
+      }, totalDuration);
     }
   };
 

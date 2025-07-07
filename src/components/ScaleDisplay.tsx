@@ -1,8 +1,11 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Play, Square } from 'lucide-react';
 import { scaleTypes, getScaleNotes } from '@/constants/musicTheory';
 import PianoKeyboard from './PianoKeyboard';
+import { useAudio } from '@/hooks/useAudio';
 
 interface ScaleDisplayProps {
   rootNote: string;
@@ -17,13 +20,24 @@ const ScaleDisplay: React.FC<ScaleDisplayProps> = ({
 }) => {
   const scale = scaleTypes[scaleType];
   const scaleNotes = getScaleNotes(rootNote, scaleType);
+  const { playScale, isPlaying, stopAll, isLoaded } = useAudio();
 
   return (
     <Card className={className}>
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>{rootNote} {scale.name}</span>
-          <Badge variant="secondary">{scale.formula}</Badge>
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary">{scale.formula}</Badge>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => isPlaying ? stopAll() : playScale(scaleNotes)}
+              disabled={!isLoaded}
+            >
+              {isPlaying ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+            </Button>
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">

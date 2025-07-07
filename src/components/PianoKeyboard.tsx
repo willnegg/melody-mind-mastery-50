@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { useAudio } from '@/hooks/useAudio';
 
 interface PianoKeyboardProps {
   octaves?: number;
@@ -16,6 +17,7 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
   showLabels = false,
   className
 }) => {
+  const { playNote, isLoaded } = useAudio();
   const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
   const blackKeys = ['C#', 'D#', '', 'F#', 'G#', 'A#', ''];
 
@@ -40,7 +42,10 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
               highlightedNotes.includes(whiteNote) && 'bg-primary text-primary-foreground hover:bg-primary/90',
               'h-32 w-8 md:w-10'
             )}
-            onClick={() => onKeyPress?.(whiteNote)}
+            onClick={() => {
+              if (isLoaded) playNote(whiteNote, octave + 4);
+              onKeyPress?.(whiteNote);
+            }}
           >
             {showLabels && (
               <span className="text-xs font-medium">
@@ -67,7 +72,10 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
                 left: `${(octave * 7 + i) * 32 + 20}px`,
                 transform: 'translateX(-50%)'
               }}
-              onClick={() => onKeyPress?.(blackNote)}
+              onClick={() => {
+                if (isLoaded) playNote(blackNote, octave + 4);
+                onKeyPress?.(blackNote);
+              }}
             >
               {showLabels && (
                 <span className="text-xs font-medium text-white">

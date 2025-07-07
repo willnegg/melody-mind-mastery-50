@@ -54,21 +54,18 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
         );
       });
 
-      // Générer les touches noires centrées entre les bonnes touches blanches
+      // Générer les touches noires avec un positionnement réaliste comme sur un vrai piano
       const blackKeyPositions = [
-        { note: 'C#', betweenWhiteKeys: [0, 1] }, // Entre C (0) et D (1)
-        { note: 'D#', betweenWhiteKeys: [1, 2] }, // Entre D (1) et E (2)
-        { note: 'F#', betweenWhiteKeys: [3, 4] }, // Entre F (3) et G (4)
-        { note: 'G#', betweenWhiteKeys: [4, 5] }, // Entre G (4) et A (5)
-        { note: 'A#', betweenWhiteKeys: [5, 6] }, // Entre A (5) et B (6)
+        { note: 'C#', leftOffset: 0.75 }, // Légèrement à droite de C
+        { note: 'D#', leftOffset: 1.75 }, // Légèrement à droite de D
+        { note: 'F#', leftOffset: 3.75 }, // Légèrement à droite de F
+        { note: 'G#', leftOffset: 4.75 }, // Légèrement à droite de G
+        { note: 'A#', leftOffset: 5.75 }, // Légèrement à droite de A
       ];
 
-      blackKeyPositions.forEach(({ note, betweenWhiteKeys }) => {
+      blackKeyPositions.forEach(({ note, leftOffset }) => {
         const noteWithOctave = `${note}${octave + 4}`;
-        const firstWhiteKeyIndex = octave * 7 + betweenWhiteKeys[0];
-        const secondWhiteKeyIndex = octave * 7 + betweenWhiteKeys[1];
-        // Position centrée entre les deux touches blanches
-        const centerPosition = (firstWhiteKeyIndex + secondWhiteKeyIndex) / 2;
+        const positionInOctave = octave * 7 + leftOffset;
         
         blackKeys.push(
           <div
@@ -80,7 +77,7 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
               'h-20 w-5 md:w-6 z-10'
             )}
             style={{ 
-              left: `calc(${centerPosition} * 2rem)`,
+              left: `calc(${positionInOctave} * 2rem)`,
               transform: 'translateX(-50%)'
             } as React.CSSProperties}
             onClick={() => {

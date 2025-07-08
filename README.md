@@ -44,8 +44,8 @@ Une application web interactive pour apprendre et pratiquer la théorie musicale
 ## 🎨 Design System
 
 ### Couleurs
-- **Primary** : `#6A5ACD` (Slate Blue)
-- **Secondary** : `#9370DB` (Medium Purple)
+- **Primary** : `#086C93` (Teal Blue)
+- **Secondary** : `#006699` (Dark Blue)
 - **Background** : `#121212` (Dark)
 - **Surface** : `#1E1E1E` (Dark Surface)
 

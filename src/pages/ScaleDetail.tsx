@@ -295,44 +295,83 @@ const ScaleDetail: React.FC = () => {
         </header>
 
         <div className="space-y-6">
-          {/* Construction d'une gamme majeure */}
+          {/* Construction d'une gamme majeure contextualisée */}
           {!showQuiz && (
             <Card>
               <CardHeader>
-                <CardTitle>🎵 Construction d'une gamme majeure</CardTitle>
+                <CardTitle>🎵 Construction de la gamme de {getScaleDisplayName(currentRoot)} majeur</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="prose prose-sm max-w-none">
                   <p className="text-muted-foreground">
-                    Maintenant que tu connais les notes, voyons comment construire une gamme majeure. Toutes les gammes majeures suivent la même formule en <strong>tons</strong> et <strong>demi-tons</strong> :
+                    Voyons comment construire concrètement la gamme de <strong>{currentRoot} majeur</strong>. Toutes les gammes majeures suivent la même formule en <strong>tons (T)</strong> et <strong>demi-tons (½T)</strong> :
                   </p>
                   
                   <div className="bg-muted p-4 rounded-lg my-4">
                     <p className="font-mono text-center text-lg font-semibold">
-                      Ton - Ton - Demi-ton - Ton - Ton - Ton - Demi-ton
+                      T – T – ½T – T – T – T – ½T
                     </p>
                     <p className="text-center text-sm text-muted-foreground mt-2">
-                      Cette formule magique crée TOUJOURS une gamme majeure !
+                      On commence sur <strong>{currentRoot}</strong> (tonique) et on suit cette formule
                     </p>
                   </div>
 
-                  <h5 className="font-medium text-foreground">Qu'est-ce qu'un ton et un demi-ton ?</h5>
-                  <ul className="text-muted-foreground space-y-1">
+                  <h5 className="font-medium text-foreground">Construction pas à pas :</h5>
+                  <div className="bg-card border rounded-lg p-4 space-y-2">
+                    {scaleNotes.map((note, index) => {
+                      if (index === 0) return (
+                        <div key={index} className="flex items-center gap-3">
+                          <Badge variant="default" className="w-8 text-center">{index + 1}</Badge>
+                          <span className="font-semibold">{note}</span>
+                          <span className="text-muted-foreground">(tonique)</span>
+                        </div>
+                      );
+                      
+                      const intervals = ['T', 'T', '½T', 'T', 'T', 'T', '½T'];
+                      const interval = intervals[index - 1];
+                      
+                      return (
+                        <div key={index} className="flex items-center gap-3">
+                          <Badge variant="outline" className="w-8 text-center">{index + 1}</Badge>
+                          <span className="font-medium">{note}</span>
+                          <span className="text-sm text-muted-foreground">
+                            ({scaleNotes[index - 1]} + {interval} = {note})
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <h5 className="font-medium text-foreground mt-4">Les demi-tons dans cette gamme :</h5>
+                  <div className="bg-accent/20 border-l-4 border-accent p-4 rounded-r-lg">
+                    <ul className="text-muted-foreground space-y-1">
+                      {(() => {
+                        const semitonePositions = [];
+                        // Identifier les positions des demi-tons (3-4 et 7-8)
+                        semitonePositions.push(`• entre ${scaleNotes[2]} et ${scaleNotes[3]} (3ème et 4ème degré)`);
+                        semitonePositions.push(`• entre ${scaleNotes[6]} et ${currentRoot} (7ème degré et octave)`);
+                        return semitonePositions.map((item, idx) => <li key={idx}>{item}</li>);
+                      })()}
+                    </ul>
+                    {currentRoot !== 'C' && (
+                      <p className="text-sm text-muted-foreground mt-3 font-medium">
+                        {(() => {
+                          const alterations = scaleNotes.filter(note => note.includes('#') || note.includes('b'));
+                          if (alterations.length > 0) {
+                            return `C'est pourquoi il y a ${alterations.map(note => `${note} (${note.replace('#', ' dièse').replace('b', ' bémol')})`).join(', ')} dans la gamme de ${currentRoot} majeur.`;
+                          }
+                          return '';
+                        })()}
+                      </p>
+                    )}
+                  </div>
+
+                  <h5 className="font-medium text-foreground">Rappel :</h5>
+                  <ul className="text-muted-foreground space-y-1 text-sm">
                     <li>• <strong>Demi-ton</strong> : la plus petite distance entre deux notes (une case sur le clavier)</li>
                     <li>• <strong>Ton</strong> : deux demi-tons (deux cases sur le clavier)</li>
+                    <li>• <strong>Demi-tons naturels</strong> : Entre E-F et B-C (pas de touches noires entre elles)</li>
                   </ul>
-
-                  <h5 className="font-medium text-foreground mt-3">Les demi-tons naturels</h5>
-                  <p className="text-muted-foreground">
-                    Sur le clavier, il y a des demi-tons "naturels" entre certaines touches blanches :
-                  </p>
-                  <ul className="text-muted-foreground space-y-1">
-                    <li>• Entre E et F (Mi et Fa)</li>
-                    <li>• Entre B et C (Si et Do)</li>
-                  </ul>
-                  <p className="text-muted-foreground text-sm">
-                    C'est pourquoi il n'y a pas de touches noires entre ces notes !
-                  </p>
                 </div>
               </CardContent>
             </Card>

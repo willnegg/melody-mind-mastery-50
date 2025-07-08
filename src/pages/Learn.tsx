@@ -41,7 +41,7 @@ const Learn: React.FC = () => {
         description: cadence.description,
         link: `/cadence/${key}`
       })),
-      color: 'text-purple-400',
+      color: 'text-secondary',
       isUnlocked: false
     }
   ];

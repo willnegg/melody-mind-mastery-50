@@ -50,6 +50,13 @@ const EarTrainingExercise: React.FC = () => {
             const intervalOptions = shuffleArray([correctInterval, ...wrongAnswers]);
             const correctIntervalIndex = intervalOptions.indexOf(correctInterval);
             
+            console.log('Interval question:', {
+              correctInterval,
+              wrongAnswers,
+              intervalOptions,
+              correctIntervalIndex
+            });
+            
             newQuestions.push({
               type: 'interval',
               correctIndex: correctIntervalIndex,

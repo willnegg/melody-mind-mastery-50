@@ -338,70 +338,155 @@ const ScaleDetail: React.FC = () => {
             </Card>
           )}
 
-          {/* Gamme actuelle */}
           {!showQuiz && (
-            <Card>
+            <Card className="overflow-hidden">
               <CardHeader>
-                <CardTitle>{getScaleDisplayName(currentRoot)} {scale.name}</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-xl">{getScaleDisplayName(currentRoot)} {scale.name}</CardTitle>
                   {getScaleSignature(currentRoot) && (
-                    <p className="font-medium mb-2">{getScaleSignature(currentRoot)}</p>
+                    <Badge variant="outline" className="text-sm">
+                      {getScaleSignature(currentRoot)}
+                    </Badge>
                   )}
-                  <div className="flex flex-wrap gap-2 mb-4">
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Notes de la gamme avec design amélioré */}
+                <div className="space-y-4">
+                  <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                    Notes de la gamme
+                  </h4>
+                  <div className="grid grid-cols-4 md:grid-cols-8 gap-3">
                     {scaleNotes.map((note, index) => (
-                      <Badge 
-                        key={index} 
-                        variant={playedNotes.includes(note) ? "default" : "outline"}
-                        className="transition-colors"
+                      <div
+                        key={index}
+                        className={`relative group transition-all duration-300 hover:scale-105 ${
+                          playedNotes.includes(note) ? 'animate-scale-in' : ''
+                        }`}
                       >
-                        {index + 1}. {note}
-                      </Badge>
+                        <Badge 
+                          variant={playedNotes.includes(note) ? "default" : "outline"}
+                          className={`w-full h-12 flex flex-col items-center justify-center text-center transition-all duration-300 ${
+                            playedNotes.includes(note) 
+                              ? 'bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-lg' 
+                              : 'hover:border-primary/50 hover:bg-muted/50'
+                          }`}
+                        >
+                          <span className="text-xs opacity-70">{index + 1}</span>
+                          <span className="font-bold">{note}</span>
+                        </Badge>
+                        {playedNotes.includes(note) && (
+                          <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-scale-in" />
+                        )}
+                      </div>
                     ))}
-                    <Badge variant="secondary">8. {currentRoot}</Badge>
+                    {/* Octave */}
+                    <div className="relative group transition-all duration-300 hover:scale-105">
+                      <Badge 
+                        variant="secondary"
+                        className="w-full h-12 flex flex-col items-center justify-center text-center bg-gradient-to-r from-secondary/80 to-accent/80"
+                      >
+                        <span className="text-xs opacity-70">8</span>
+                        <span className="font-bold">{currentRoot}</span>
+                      </Badge>
+                    </div>
                   </div>
-                  <div className="text-center">
-                    <Button
-                      variant="outline"
-                      onClick={handleListenScale}
-                      disabled={!isLoaded}
-                    >
-                      <Volume2 className="h-4 w-4 mr-2" />
-                      {isPlaying ? 'Stop' : 'Écouter la gamme'}
-                    </Button>
-                  </div>
+                </div>
+
+                {/* Bouton écouter avec design amélioré */}
+                <div className="text-center pt-2">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={handleListenScale}
+                    disabled={!isLoaded}
+                    className="transition-all duration-300 hover:scale-105 hover:bg-primary/10 hover:border-primary/50"
+                  >
+                    <Volume2 className="h-5 w-5 mr-2" />
+                    {isPlaying ? 'Stop' : 'Écouter la gamme'}
+                  </Button>
                 </div>
               </CardContent>
             </Card>
           )}
 
-          {/* Étapes d'apprentissage */}
-          <Card>
+          {/* Étapes d'apprentissage avec design amélioré */}
+          <Card className="overflow-hidden">
             <CardHeader>
-              <CardTitle>Étapes d'apprentissage</CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-xl">Étapes d'apprentissage</CardTitle>
+                <Badge variant="secondary" className="text-sm">
+                  {learningSteps.filter(step => step.completed).length}/{learningSteps.length}
+                </Badge>
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {learningSteps.map((step, index) => (
-                  <div key={step.id} className="flex items-center gap-4 p-4 rounded-lg border border-border">
-                    <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-                      step.completed ? 'bg-green-500 text-white' : 'bg-muted text-muted-foreground'
-                    }`}>
-                      {step.completed ? <CheckCircle className="h-4 w-4" /> : index + 1}
-                    </div>
-                    <div className="flex-1 text-center">
-                      <h3 className="font-medium">{step.title}</h3>
-                      <p className="text-sm text-muted-foreground">{step.description}</p>
-                    </div>
+              <div className="space-y-6">
+                {/* Barre de progression globale */}
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Progression</span>
+                    <span className="font-medium">
+                      {Math.round((learningSteps.filter(step => step.completed).length / learningSteps.length) * 100)}%
+                    </span>
                   </div>
-                ))}
+                  <Progress 
+                    value={(learningSteps.filter(step => step.completed).length / learningSteps.length) * 100} 
+                    className="h-2"
+                  />
+                </div>
+
+                {/* Étapes avec connexions visuelles */}
+                <div className="relative space-y-4">
+                  {learningSteps.map((step, index) => (
+                    <div key={step.id} className="relative">
+                      {/* Ligne de connexion */}
+                      {index < learningSteps.length - 1 && (
+                        <div className="absolute left-4 top-12 w-0.5 h-8 bg-border" />
+                      )}
+                      
+                      <div className={`relative flex items-center gap-4 p-4 rounded-lg border transition-all duration-300 hover:shadow-md ${
+                        step.completed ? 'border-green-500/50 bg-green-500/5' : 'border-border hover:border-primary/50'
+                      }`}>
+                        {/* Indicateur d'étape amélioré */}
+                        <div className={`relative flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                          step.completed 
+                            ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg' 
+                            : 'bg-gradient-to-r from-muted to-muted-foreground/20 text-muted-foreground'
+                        }`}>
+                          {step.completed ? (
+                            <CheckCircle className="h-5 w-5 animate-scale-in" />
+                          ) : (
+                            <span className="font-bold">{index + 1}</span>
+                          )}
+                          {step.completed && (
+                            <div className="absolute inset-0 rounded-full bg-green-500/20 animate-ping" />
+                          )}
+                        </div>
+                        
+                        {/* Contenu de l'étape */}
+                        <div className="flex-1 text-center">
+                          <h3 className={`font-semibold transition-colors ${
+                            step.completed ? 'text-green-700 dark:text-green-400' : 'text-foreground'
+                          }`}>
+                            {step.title}
+                          </h3>
+                          <p className="text-sm text-muted-foreground mt-1">{step.description}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
                 
-                {/* Bouton quiz centré en bas */}
+                {/* Bouton quiz avec animation */}
                 {learningSteps[1].completed && !learningSteps[2].completed && !showQuiz && (
-                  <div className="text-center pt-4">
-                    <Button onClick={handleStartQuiz} size="lg">
-                      <Brain className="h-4 w-4 mr-2" />
+                  <div className="text-center pt-6 animate-fade-in">
+                    <Button 
+                      onClick={handleStartQuiz} 
+                      size="lg"
+                      className="transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-primary to-secondary"
+                    >
+                      <Brain className="h-5 w-5 mr-2" />
                       Commencer le quiz
                     </Button>
                   </div>

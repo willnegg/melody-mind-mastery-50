@@ -580,12 +580,26 @@ const ScaleDetail: React.FC = () => {
             <Button variant="outline" onClick={() => navigate('/scales')}>
               Retour aux gammes
             </Button>
-            {currentScaleIndex === scaleProgression.length - 1 && isCurrentScaleCompleted && (
-              <Button onClick={() => navigate('/scales')}>
-                <CheckCircle className="h-4 w-4 mr-2" />
-                Toutes les gammes terminées !
-              </Button>
-            )}
+            <div className="flex gap-2">
+              {currentScaleIndex > 0 && (
+                <Button variant="outline" onClick={handlePreviousScale}>
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Gamme précédente
+                </Button>
+              )}
+              {isCurrentScaleCompleted && currentScaleIndex < scaleProgression.length - 1 && (
+                <Button onClick={handleNextScale}>
+                  Gamme suivante
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
+              )}
+              {currentScaleIndex === scaleProgression.length - 1 && isCurrentScaleCompleted && (
+                <Button onClick={() => navigate('/scales')}>
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Toutes les gammes terminées !
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>

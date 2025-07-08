@@ -29,7 +29,7 @@ const Learn: React.FC = () => {
         description: chord.description,
         link: `/chord/${key}`
       })),
-      color: 'text-purple-400',
+      color: 'text-secondary',
       isUnlocked: false
     },
     {

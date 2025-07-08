@@ -8,6 +8,8 @@ interface PianoKeyboardProps {
   onKeyPress?: (note: string) => void;
   showLabels?: boolean;
   className?: string;
+  startingNote?: string;
+  baseOctave?: number;
 }
 
 const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
@@ -15,29 +17,50 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
   highlightedNotes = [],
   onKeyPress,
   showLabels = false,
-  className
+  className,
+  startingNote = 'C',
+  baseOctave = 4
 }) => {
   const { playNote, isLoaded } = useAudio();
 
   const renderOctave = (octave: number) => {
-    const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+    // Adapter les touches selon la note de départ
+    const allWhiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+    const startIndex = allWhiteKeys.indexOf(startingNote);
+    const whiteKeys = [...allWhiteKeys.slice(startIndex), ...allWhiteKeys.slice(0, startIndex)];
+    
     const keyWidth = 40; // largeur fixe en pixels
     
-    // Définition précise des touches noires : entre quelles touches blanches elles se situent
-    const blackKeys = [
-      { note: 'C#', betweenKeys: [0, 1] }, // entre C (0) et D (1)
-      { note: 'D#', betweenKeys: [1, 2] }, // entre D (1) et E (2)
-      { note: 'F#', betweenKeys: [3, 4] }, // entre F (3) et G (4)
-      { note: 'G#', betweenKeys: [4, 5] }, // entre G (4) et A (5)
-      { note: 'A#', betweenKeys: [5, 6] }  // entre A (5) et B (6)
-    ];
+    // Définition précise des touches noires selon la note de départ
+    const getBlackKeys = () => {
+      if (startingNote === 'C') {
+        return [
+          { note: 'C#', betweenKeys: [0, 1] },
+          { note: 'D#', betweenKeys: [1, 2] },
+          { note: 'F#', betweenKeys: [3, 4] },
+          { note: 'G#', betweenKeys: [4, 5] },
+          { note: 'A#', betweenKeys: [5, 6] }
+        ];
+      } else { // startingNote === 'F'
+        return [
+          { note: 'F#', betweenKeys: [0, 1] }, // entre F et G
+          { note: 'G#', betweenKeys: [1, 2] }, // entre G et A
+          { note: 'A#', betweenKeys: [2, 3] }, // entre A et B
+          { note: 'C#', betweenKeys: [4, 5] }, // entre C et D
+          { note: 'D#', betweenKeys: [5, 6] }  // entre D et E
+        ];
+      }
+    };
+    
+    const blackKeys = getBlackKeys();
 
     return (
       <div key={octave} className="relative">
         {/* Conteneur pour les touches blanches */}
         <div className="flex">
           {whiteKeys.map((note, index) => {
-            const noteWithOctave = `${note}${octave + 4}`;
+            const currentOctave = baseOctave + octave + (startingNote !== 'C' && ['C', 'D', 'E'].includes(note) ? 1 : 0);
+            const noteWithOctave = `${note}${currentOctave}`;
             return (
               <div
                 key={noteWithOctave}
@@ -50,7 +73,7 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
                 )}
                 style={{ width: `${keyWidth}px` }}
                 onClick={() => {
-                  if (isLoaded) playNote(note, octave + 4);
+                  if (isLoaded) playNote(note, currentOctave);
                   onKeyPress?.(note);
                 }}
               >
@@ -67,13 +90,14 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
         {/* Touches noires positionnées au centre entre les touches blanches */}
         {blackKeys.map((blackKey) => {
           const [leftKeyIndex, rightKeyIndex] = blackKey.betweenKeys;
-          const leftPosition = leftKeyIndex * keyWidth + keyWidth; // fin de la touche de gauche
-          const rightPosition = rightKeyIndex * keyWidth; // début de la touche de droite
-          const centerPosition = (leftPosition + rightPosition) / 2; // centre exact
+          const leftPosition = leftKeyIndex * keyWidth + keyWidth;
+          const rightPosition = rightKeyIndex * keyWidth;
+          const centerPosition = (leftPosition + rightPosition) / 2;
+          const currentOctave = baseOctave + octave + (startingNote !== 'C' && ['C', 'D', 'E'].includes(blackKey.note) ? 1 : 0);
           
           return (
             <div
-              key={`${blackKey.note}${octave + 4}`}
+              key={`${blackKey.note}${currentOctave}`}
               className={cn(
                 'absolute bg-gray-800 border border-gray-700 rounded-b-md cursor-pointer transition-all duration-150',
                 'hover:bg-gray-700 active:bg-gray-600 flex items-end justify-center pb-1 z-10',
@@ -86,7 +110,7 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
                 top: 0
               }}
               onClick={() => {
-                if (isLoaded) playNote(blackKey.note, octave + 4);
+                if (isLoaded) playNote(blackKey.note, currentOctave);
                 onKeyPress?.(blackKey.note);
               }}
             >

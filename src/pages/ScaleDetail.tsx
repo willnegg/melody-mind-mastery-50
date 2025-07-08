@@ -51,21 +51,23 @@ const ScaleDetail: React.FC = () => {
     return highKeys.includes(root) ? 2 : 3;
   };
 
-  // Générer les notes avec octaves logiques
+  // Générer les notes avec octaves logiques (gamme ascendante continue)
   const getCompleteScaleNotes = (root: string, notes: string[]) => {
     const startingOctave = getStartingOctave(root);
     const completeNotes: string[] = [];
     let currentOctave = startingOctave;
     
+    // Ordre chromatique pour détecter les passages d'octave
+    const chromaticOrder = ['C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'G#', 'Ab', 'A', 'A#', 'Bb', 'B'];
+    
     notes.forEach((note, index) => {
-      // Si on revient à C après avoir dépassé B, on passe à l'octave suivante
       if (index > 0) {
         const prevNote = notes[index - 1];
-        const prevNoteBase = prevNote.replace(/[#b]/g, '');
-        const currentNoteBase = note.replace(/[#b]/g, '');
+        const prevIndex = chromaticOrder.findIndex(n => n === prevNote);
+        const currentIndex = chromaticOrder.findIndex(n => n === note);
         
-        // Si la note précédente était B (ou proche) et qu'on arrive sur C (ou proche), monter d'octave
-        if ((prevNoteBase === 'B' || prevNoteBase === 'A') && (currentNoteBase === 'C' || currentNoteBase === 'D')) {
+        // Si la note actuelle a un index chromatique inférieur à la précédente, on change d'octave
+        if (currentIndex <= prevIndex) {
           currentOctave++;
         }
       }
@@ -73,13 +75,27 @@ const ScaleDetail: React.FC = () => {
       completeNotes.push(`${note}${currentOctave}`);
     });
     
-    // Ajouter l'octave (répétition de la tonique)
-    completeNotes.push(`${root}${currentOctave + (completeNotes[completeNotes.length - 1].includes('5') ? 0 : 1)}`);
+    // Ajouter l'octave finale (même octave que la dernière note + 1 demi-ton)
+    const lastNoteOctave = parseInt(completeNotes[completeNotes.length - 1].slice(-1));
+    completeNotes.push(`${root}${lastNoteOctave + 1}`);
     
     return completeNotes;
   };
 
   const completeScaleNotes = getCompleteScaleNotes(currentRoot, scaleNotes);
+  const audioStartingOctave = getStartingOctave(currentRoot);
+
+  // Configuration clavier dynamique
+  const getKeyboardConfig = (root: string) => {
+    const lowKeys = ['C', 'D', 'E'];
+    if (lowKeys.includes(root)) {
+      return { startingNote: 'C', octaves: 2, baseOctave: audioStartingOctave };
+    } else {
+      return { startingNote: 'F', octaves: 2, baseOctave: audioStartingOctave };
+    }
+  };
+
+  const keyboardConfig = getKeyboardConfig(currentRoot);
 
   // Fonction pour obtenir le nom de la gamme avec français/international
   const getScaleDisplayName = (root: string) => {
@@ -632,10 +648,12 @@ const ScaleDetail: React.FC = () => {
               <CardContent>
                 <div className="overflow-x-auto flex justify-center">
                   <PianoKeyboard 
-                    octaves={2}
+                    octaves={keyboardConfig.octaves}
                     highlightedNotes={scaleNotes}
                     onKeyPress={handleNotePlay}
                     showLabels={true}
+                    startingNote={keyboardConfig.startingNote}
+                    baseOctave={keyboardConfig.baseOctave}
                   />
                 </div>
                 <div className="mt-4 text-center">

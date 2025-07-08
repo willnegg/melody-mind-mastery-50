@@ -166,12 +166,9 @@ const ScaleDetail: React.FC = () => {
   const allStepsCompleted = learningSteps.every(step => step.completed);
 
   useEffect(() => {
-    // Trouve l'index de la gamme actuelle ou la première non complétée
-    const uncompletedIndex = scaleProgression.findIndex(root => 
-      !scales[`${scaleType}-${root}`]?.completed
-    );
-    setCurrentScaleIndex(uncompletedIndex === -1 ? 0 : uncompletedIndex);
-  }, [scales, scaleType]);
+    // Commencer toujours par la première gamme (C) au chargement de la page
+    setCurrentScaleIndex(0);
+  }, [scaleType]);
 
   useEffect(() => {
     // Reset states when scale changes

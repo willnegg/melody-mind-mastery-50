@@ -133,7 +133,9 @@ const EarTrainingExercise: React.FC = () => {
     setSelectedAnswer(answer);
     setShowResult(true);
     
-    if (answer === questions[currentQuestion]?.correct) {
+    // Vérifier si la réponse sélectionnée correspond à la bonne réponse
+    const selectedIndex = questions[currentQuestion]?.options.indexOf(answer);
+    if (selectedIndex === questions[currentQuestion]?.correctIndex) {
       setScore(score + 1);
     }
   };
@@ -146,9 +148,10 @@ const EarTrainingExercise: React.FC = () => {
     } else {
       // Quiz complete
       setIsComplete(true);
-      updateEarTrainingScore(type as 'intervals' | 'chords' | 'scales' | 'progressions', score + (selectedAnswer === questions[currentQuestion]?.correct ? 1 : 0), totalQuestions);
+      updateEarTrainingScore(type as 'intervals' | 'chords' | 'scales' | 'progressions', score + (selectedAnswer && questions[currentQuestion]?.options.indexOf(selectedAnswer) === questions[currentQuestion]?.correctIndex ? 1 : 0), totalQuestions);
       
-      const finalScore = score + (selectedAnswer === questions[currentQuestion]?.correct ? 1 : 0);
+      const selectedIndex = selectedAnswer ? questions[currentQuestion]?.options.indexOf(selectedAnswer) : -1;
+      const finalScore = score + (selectedIndex === questions[currentQuestion]?.correctIndex ? 1 : 0);
       const percentage = Math.round((finalScore / totalQuestions) * 100);
       
       toast({
@@ -295,7 +298,7 @@ const EarTrainingExercise: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {question.options.map((option: string, index: number) => {
                   const isSelected = selectedAnswer === option;
-                  const isCorrect = option === question.correct;
+                  const isCorrect = index === question.correctIndex;
                   
                   let buttonVariant: "default" | "outline" | "destructive" | "secondary" = "outline";
                   

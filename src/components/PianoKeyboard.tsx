@@ -20,108 +20,84 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
   const { playNote, isLoaded } = useAudio();
 
   const renderOctave = (octave: number) => {
-    const keys = [];
+    const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+    const keyWidth = 40; // largeur fixe en pixels
     
-    // Structure d'une octave : C C# D D# E F F# G G# A A# B
-    const octaveStructure = [
-      { note: 'C', type: 'white' },
-      { note: 'C#', type: 'black' },
-      { note: 'D', type: 'white' },
-      { note: 'D#', type: 'black' },
-      { note: 'E', type: 'white' },
-      { note: 'F', type: 'white' },
-      { note: 'F#', type: 'black' },
-      { note: 'G', type: 'white' },
-      { note: 'G#', type: 'black' },
-      { note: 'A', type: 'white' },
-      { note: 'A#', type: 'black' },
-      { note: 'B', type: 'white' }
+    // Définition précise des touches noires : entre quelles touches blanches elles se situent
+    const blackKeys = [
+      { note: 'C#', betweenKeys: [0, 1] }, // entre C (0) et D (1)
+      { note: 'D#', betweenKeys: [1, 2] }, // entre D (1) et E (2)
+      { note: 'F#', betweenKeys: [3, 4] }, // entre F (3) et G (4)
+      { note: 'G#', betweenKeys: [4, 5] }, // entre G (4) et A (5)
+      { note: 'A#', betweenKeys: [5, 6] }  // entre A (5) et B (6)
     ];
 
     return (
-      <div key={octave} className="relative flex">
-        {/* Touches blanches */}
-        {octaveStructure.filter(k => k.type === 'white').map((keyInfo, index) => {
-          const noteWithOctave = `${keyInfo.note}${octave + 4}`;
+      <div key={octave} className="relative">
+        {/* Conteneur pour les touches blanches */}
+        <div className="flex">
+          {whiteKeys.map((note, index) => {
+            const noteWithOctave = `${note}${octave + 4}`;
+            return (
+              <div
+                key={noteWithOctave}
+                className={cn(
+                  'bg-white border border-border rounded-b-md cursor-pointer transition-all duration-150',
+                  'hover:bg-muted active:bg-accent',
+                  'flex items-end justify-center pb-2',
+                  highlightedNotes.includes(note) && 'bg-primary text-primary-foreground hover:bg-primary/90',
+                  'h-32'
+                )}
+                style={{ width: `${keyWidth}px` }}
+                onClick={() => {
+                  if (isLoaded) playNote(note, octave + 4);
+                  onKeyPress?.(note);
+                }}
+              >
+                {showLabels && (
+                  <span className="text-xs font-medium">
+                    {note}
+                  </span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        
+        {/* Touches noires positionnées au centre entre les touches blanches */}
+        {blackKeys.map((blackKey) => {
+          const [leftKeyIndex, rightKeyIndex] = blackKey.betweenKeys;
+          const leftPosition = leftKeyIndex * keyWidth + keyWidth; // fin de la touche de gauche
+          const rightPosition = rightKeyIndex * keyWidth; // début de la touche de droite
+          const centerPosition = (leftPosition + rightPosition) / 2; // centre exact
+          
           return (
             <div
-              key={noteWithOctave}
+              key={`${blackKey.note}${octave + 4}`}
               className={cn(
-                'bg-white border border-border rounded-b-md cursor-pointer transition-all duration-150',
-                'hover:bg-muted active:bg-accent',
-                'flex items-end justify-center pb-2',
-                highlightedNotes.includes(keyInfo.note) && 'bg-primary text-primary-foreground hover:bg-primary/90',
-                'h-32 w-8 md:w-10'
+                'absolute bg-gray-800 border border-gray-700 rounded-b-md cursor-pointer transition-all duration-150',
+                'hover:bg-gray-700 active:bg-gray-600 flex items-end justify-center pb-1 z-10',
+                'h-20 w-6',
+                highlightedNotes.includes(blackKey.note) && 'bg-purple-600 hover:bg-purple-700'
               )}
+              style={{ 
+                left: `${centerPosition}px`,
+                transform: 'translateX(-50%)',
+                top: 0
+              }}
               onClick={() => {
-                if (isLoaded) playNote(keyInfo.note, octave + 4);
-                onKeyPress?.(keyInfo.note);
+                if (isLoaded) playNote(blackKey.note, octave + 4);
+                onKeyPress?.(blackKey.note);
               }}
             >
               {showLabels && (
-                <span className="text-xs font-medium">
-                  {keyInfo.note}
+                <span className="text-xs font-medium text-white">
+                  {blackKey.note}
                 </span>
               )}
             </div>
           );
         })}
-        
-        {/* Touches noires en position absolue */}
-        <div
-          className="absolute bg-gray-800 border border-gray-700 rounded-b-md cursor-pointer transition-all duration-150 hover:bg-gray-700 active:bg-gray-600 flex items-end justify-center pb-1 h-20 w-5 md:w-6 z-10"
-          style={{ left: '1.5rem', transform: 'translateX(-50%)' }}
-          onClick={() => {
-            if (isLoaded) playNote('C#', octave + 4);
-            onKeyPress?.('C#');
-          }}
-        >
-          {showLabels && <span className="text-xs font-medium text-white">C#</span>}
-        </div>
-        
-        <div
-          className="absolute bg-gray-800 border border-gray-700 rounded-b-md cursor-pointer transition-all duration-150 hover:bg-gray-700 active:bg-gray-600 flex items-end justify-center pb-1 h-20 w-5 md:w-6 z-10"
-          style={{ left: '3.5rem', transform: 'translateX(-50%)' }}
-          onClick={() => {
-            if (isLoaded) playNote('D#', octave + 4);
-            onKeyPress?.('D#');
-          }}
-        >
-          {showLabels && <span className="text-xs font-medium text-white">D#</span>}
-        </div>
-        
-        <div
-          className="absolute bg-gray-800 border border-gray-700 rounded-b-md cursor-pointer transition-all duration-150 hover:bg-gray-700 active:bg-gray-600 flex items-end justify-center pb-1 h-20 w-5 md:w-6 z-10"
-          style={{ left: '7.5rem', transform: 'translateX(-50%)' }}
-          onClick={() => {
-            if (isLoaded) playNote('F#', octave + 4);
-            onKeyPress?.('F#');
-          }}
-        >
-          {showLabels && <span className="text-xs font-medium text-white">F#</span>}
-        </div>
-        
-        <div
-          className="absolute bg-gray-800 border border-gray-700 rounded-b-md cursor-pointer transition-all duration-150 hover:bg-gray-700 active:bg-gray-600 flex items-end justify-center pb-1 h-20 w-5 md:w-6 z-10"
-          style={{ left: '9.5rem', transform: 'translateX(-50%)' }}
-          onClick={() => {
-            if (isLoaded) playNote('G#', octave + 4);
-            onKeyPress?.('G#');
-          }}
-        >
-          {showLabels && <span className="text-xs font-medium text-white">G#</span>}
-        </div>
-        
-        <div
-          className="absolute bg-gray-800 border border-gray-700 rounded-b-md cursor-pointer transition-all duration-150 hover:bg-gray-700 active:bg-gray-600 flex items-end justify-center pb-1 h-20 w-5 md:w-6 z-10"
-          style={{ left: '11.5rem', transform: 'translateX(-50%)' }}
-          onClick={() => {
-            if (isLoaded) playNote('A#', octave + 4);
-            onKeyPress?.('A#');
-          }}
-        >
-          {showLabels && <span className="text-xs font-medium text-white">A#</span>}
-        </div>
       </div>
     );
   };

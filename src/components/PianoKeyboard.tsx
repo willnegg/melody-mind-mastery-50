@@ -76,12 +76,6 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
                   onKeyPress?.(note);
                 }}
               >
-                {/* Pastille pour les notes de la gamme */}
-                {highlightedNotes.includes(note) && (
-                  <div className="absolute top-2 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold z-20">
-                    {note}
-                  </div>
-                )}
                 {showLabels && !highlightedNotes.includes(note) && (
                   <span className="text-xs font-medium text-muted-foreground">
                     {note}
@@ -118,12 +112,52 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
                 onKeyPress?.(blackKey.note);
               }}
             >
-              {/* Pastille pour les notes noires de la gamme */}
-              {highlightedNotes.includes(blackKey.note) && (
-                <div className="absolute top-1 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold z-30">
-                  {blackKey.note.replace('#', '♯').replace('b', '♭')}
-                </div>
-              )}
+            </div>
+          );
+        })}
+
+        {/* Pastilles pour toutes les touches de la gamme - au premier plan */}
+        {/* Pastilles touches blanches */}
+        {whiteKeys.map((note, index) => {
+          const currentOctave = baseOctave + octave + (startingNote !== 'C' && ['C', 'D', 'E'].includes(note) ? 1 : 0);
+          if (!highlightedNotes.includes(note)) return null;
+          
+          return (
+            <div
+              key={`pastille-white-${note}${currentOctave}`}
+              className="absolute bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold z-50 pointer-events-none"
+              style={{
+                left: `${index * keyWidth + keyWidth/2}px`,
+                top: '8px',
+                transform: 'translateX(-50%)'
+              }}
+            >
+              {note}
+            </div>
+          );
+        })}
+
+        {/* Pastilles touches noires */}
+        {blackKeys.map((blackKey) => {
+          const [leftKeyIndex, rightKeyIndex] = blackKey.betweenKeys;
+          const leftPosition = leftKeyIndex * keyWidth + keyWidth;
+          const rightPosition = rightKeyIndex * keyWidth;
+          const centerPosition = (leftPosition + rightPosition) / 2;
+          const currentOctave = baseOctave + octave + (startingNote !== 'C' && ['C', 'D', 'E'].includes(blackKey.note) ? 1 : 0);
+          
+          if (!highlightedNotes.includes(blackKey.note)) return null;
+          
+          return (
+            <div
+              key={`pastille-black-${blackKey.note}${currentOctave}`}
+              className="absolute bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold z-50 pointer-events-none"
+              style={{
+                left: `${centerPosition}px`,
+                top: '4px',
+                transform: 'translateX(-50%)'
+              }}
+            >
+              {blackKey.note.replace('#', '♯').replace('b', '♭')}
             </div>
           );
         })}

@@ -78,7 +78,7 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
                 'absolute bg-gray-800 border border-gray-700 rounded-b-md cursor-pointer transition-all duration-150',
                 'hover:bg-gray-700 active:bg-gray-600 flex items-end justify-center pb-1 z-10',
                 'h-20 w-6',
-                highlightedNotes.includes(blackKey.note) && 'bg-purple-600 hover:bg-purple-700'
+                highlightedNotes.includes(blackKey.note) && 'bg-primary hover:bg-primary/80'
               )}
               style={{ 
                 left: `${centerPosition}px`,

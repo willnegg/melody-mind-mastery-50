@@ -52,7 +52,6 @@ const EarTrainingExercise: React.FC = () => {
             
             newQuestions.push({
               type: 'interval',
-              correct: correctInterval,
               correctIndex: correctIntervalIndex,
               options: intervalOptions,
               question: `What interval is this?`
@@ -71,7 +70,6 @@ const EarTrainingExercise: React.FC = () => {
             
             newQuestions.push({
               type: 'chord',
-              correct: correctChord,
               correctIndex: correctChordIndex,
               options: chordOptions,
               question: `What type of chord is this?`
@@ -90,7 +88,6 @@ const EarTrainingExercise: React.FC = () => {
             
             newQuestions.push({
               type: 'scale',
-              correct: correctScale,
               correctIndex: correctScaleIndex,
               options: scaleOptions,
               question: `What scale is this?`
@@ -109,7 +106,6 @@ const EarTrainingExercise: React.FC = () => {
             
             newQuestions.push({
               type: 'progression',
-              correct: correctProgression,
               correctIndex: correctProgressionIndex,
               options: progressionOptions,
               question: `What chord progression is this?`

@@ -23,6 +23,9 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
 }) => {
   const { playNote, isLoaded } = useAudio();
 
+  // Debug pour voir les notes mises en évidence
+  console.log('highlightedNotes:', highlightedNotes);
+
   const renderOctave = (octave: number) => {
     // Adapter les touches selon la note de départ
     const allWhiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
@@ -86,12 +89,11 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
           })}
         </div>
         
-        {/* Touches noires positionnées au centre entre les touches blanches */}
-        {blackKeys.map((blackKey) => {
-          const [leftKeyIndex, rightKeyIndex] = blackKey.betweenKeys;
-          const leftPosition = leftKeyIndex * keyWidth + keyWidth;
-          const rightPosition = rightKeyIndex * keyWidth;
-          const centerPosition = (leftPosition + rightPosition) / 2;
+        {/* Touches noires avec positionnement corrigé */}
+        {blackKeys.map((blackKey, blackIndex) => {
+          const [leftKeyIndex] = blackKey.betweenKeys;
+          // Position centrée entre les deux touches blanches correctement
+          const centerPosition = (leftKeyIndex + 0.5) * keyWidth;
           const currentOctave = baseOctave + octave + (startingNote !== 'C' && ['C', 'D', 'E'].includes(blackKey.note) ? 1 : 0);
           
           return (
@@ -127,7 +129,7 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
               key={`pastille-white-${note}${currentOctave}`}
               className="absolute bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold z-50 pointer-events-none"
               style={{
-                left: `${index * keyWidth + keyWidth/2}px`,
+                left: `${(index + 0.5) * keyWidth}px`,
                 top: '8px',
                 transform: 'translateX(-50%)'
               }}
@@ -138,14 +140,14 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
         })}
 
         {/* Pastilles touches noires */}
-        {blackKeys.map((blackKey) => {
-          const [leftKeyIndex, rightKeyIndex] = blackKey.betweenKeys;
-          const leftPosition = leftKeyIndex * keyWidth + keyWidth;
-          const rightPosition = rightKeyIndex * keyWidth;
-          const centerPosition = (leftPosition + rightPosition) / 2;
+        {blackKeys.map((blackKey, blackIndex) => {
+          const [leftKeyIndex] = blackKey.betweenKeys;
+          const centerPosition = (leftKeyIndex + 0.5) * keyWidth;
           const currentOctave = baseOctave + octave + (startingNote !== 'C' && ['C', 'D', 'E'].includes(blackKey.note) ? 1 : 0);
           
           if (!highlightedNotes.includes(blackKey.note)) return null;
+          
+          console.log('Rendering black pastille for:', blackKey.note, 'highlighted:', highlightedNotes.includes(blackKey.note));
           
           return (
             <div

@@ -29,7 +29,7 @@ const Learn: React.FC = () => {
         description: chord.description,
         link: `/chord/${key}`
       })),
-      color: 'text-secondary',
+      color: 'text-primary',
       isUnlocked: false
     },
     {
@@ -41,7 +41,7 @@ const Learn: React.FC = () => {
         description: cadence.description,
         link: `/cadence/${key}`
       })),
-      color: 'text-accent-foreground',
+      color: 'text-primary',
       isUnlocked: false
     }
   ];

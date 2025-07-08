@@ -98,7 +98,7 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
   };
 
   return (
-    <div className={cn('relative flex bg-background p-4 rounded-lg border', className)}>
+    <div className={cn('relative bg-background p-4 rounded-lg border inline-block', className)}>
       <div className="flex gap-0">
         {Array.from({ length: octaves }, (_, i) => renderOctave(i))}
       </div>

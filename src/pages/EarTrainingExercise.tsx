@@ -23,6 +23,16 @@ const EarTrainingExercise: React.FC = () => {
 
   const totalQuestions = 10;
 
+  // Fonction utilitaire pour mélanger un tableau (algorithme Fisher-Yates)
+  const shuffleArray = (array: string[]): string[] => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
   // Generate questions based on type
   useEffect(() => {
     const generateQuestions = () => {
@@ -33,15 +43,18 @@ const EarTrainingExercise: React.FC = () => {
           case 'intervals':
             const intervalKeys = Object.keys(intervals);
             const correctInterval = intervalKeys[Math.floor(Math.random() * intervalKeys.length)];
-            const wrongAnswers = intervalKeys
-              .filter(int => int !== correctInterval)
-              .sort(() => 0.5 - Math.random())
+            const wrongAnswers = shuffleArray(intervalKeys
+              .filter(int => int !== correctInterval))
               .slice(0, 3);
+            
+            const intervalOptions = shuffleArray([correctInterval, ...wrongAnswers]);
+            const correctIntervalIndex = intervalOptions.indexOf(correctInterval);
             
             newQuestions.push({
               type: 'interval',
               correct: correctInterval,
-              options: [correctInterval, ...wrongAnswers].sort(() => 0.5 - Math.random()),
+              correctIndex: correctIntervalIndex,
+              options: intervalOptions,
               question: `What interval is this?`
             });
             break;
@@ -49,15 +62,18 @@ const EarTrainingExercise: React.FC = () => {
           case 'chords':
             const chordKeys = Object.keys(chordTypes);
             const correctChord = chordKeys[Math.floor(Math.random() * chordKeys.length)];
-            const wrongChords = chordKeys
-              .filter(chord => chord !== correctChord)
-              .sort(() => 0.5 - Math.random())
+            const wrongChords = shuffleArray(chordKeys
+              .filter(chord => chord !== correctChord))
               .slice(0, 3);
+            
+            const chordOptions = shuffleArray([correctChord, ...wrongChords]);
+            const correctChordIndex = chordOptions.indexOf(correctChord);
             
             newQuestions.push({
               type: 'chord',
               correct: correctChord,
-              options: [correctChord, ...wrongChords].sort(() => 0.5 - Math.random()),
+              correctIndex: correctChordIndex,
+              options: chordOptions,
               question: `What type of chord is this?`
             });
             break;
@@ -65,15 +81,18 @@ const EarTrainingExercise: React.FC = () => {
           case 'scales':
             const scaleKeys = Object.keys(scaleTypes);
             const correctScale = scaleKeys[Math.floor(Math.random() * scaleKeys.length)];
-            const wrongScales = scaleKeys
-              .filter(scale => scale !== correctScale)
-              .sort(() => 0.5 - Math.random())
+            const wrongScales = shuffleArray(scaleKeys
+              .filter(scale => scale !== correctScale))
               .slice(0, 3);
+            
+            const scaleOptions = shuffleArray([correctScale, ...wrongScales]);
+            const correctScaleIndex = scaleOptions.indexOf(correctScale);
             
             newQuestions.push({
               type: 'scale',
               correct: correctScale,
-              options: [correctScale, ...wrongScales].sort(() => 0.5 - Math.random()),
+              correctIndex: correctScaleIndex,
+              options: scaleOptions,
               question: `What scale is this?`
             });
             break;
@@ -81,15 +100,18 @@ const EarTrainingExercise: React.FC = () => {
           case 'progressions':
             const progressions = ['I-V-vi-IV', 'ii-V-I', 'I-vi-IV-V', 'vi-IV-I-V'];
             const correctProgression = progressions[Math.floor(Math.random() * progressions.length)];
-            const wrongProgressions = progressions
-              .filter(prog => prog !== correctProgression)
-              .sort(() => 0.5 - Math.random())
+            const wrongProgressions = shuffleArray(progressions
+              .filter(prog => prog !== correctProgression))
               .slice(0, 3);
+            
+            const progressionOptions = shuffleArray([correctProgression, ...wrongProgressions]);
+            const correctProgressionIndex = progressionOptions.indexOf(correctProgression);
             
             newQuestions.push({
               type: 'progression',
               correct: correctProgression,
-              options: [correctProgression, ...wrongProgressions].sort(() => 0.5 - Math.random()),
+              correctIndex: correctProgressionIndex,
+              options: progressionOptions,
               question: `What chord progression is this?`
             });
             break;
@@ -287,14 +309,14 @@ const EarTrainingExercise: React.FC = () => {
                     buttonVariant = "secondary";
                   }
 
-                  return (
-                    <Button
-                      key={index}
-                      variant={buttonVariant}
-                      onClick={() => handleAnswerSelect(option)}
-                      disabled={showResult}
-                      className="h-auto p-4 text-left justify-start"
-                    >
+                   return (
+                     <Button
+                       key={`${currentQuestion}-${index}`}
+                       variant={buttonVariant}
+                       onClick={() => handleAnswerSelect(option)}
+                       disabled={showResult}
+                       className="h-auto p-4 text-left justify-start"
+                     >
                       <div>
                         <div className="font-medium">
                           {getDisplayName(option, question.type)}

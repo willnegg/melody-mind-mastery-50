@@ -67,8 +67,7 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
                 className={cn(
                   'bg-white border border-border rounded-b-md cursor-pointer transition-all duration-150',
                   'hover:bg-muted active:bg-accent',
-                  'flex items-end justify-center pb-2',
-                  highlightedNotes.includes(note) && 'bg-primary text-primary-foreground hover:bg-primary/90',
+                  'flex items-end justify-center pb-2 relative',
                   'h-32'
                 )}
                 style={{ width: `${keyWidth}px` }}
@@ -77,8 +76,14 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
                   onKeyPress?.(note);
                 }}
               >
-                {showLabels && (
-                  <span className="text-xs font-medium">
+                {/* Pastille pour les notes de la gamme */}
+                {highlightedNotes.includes(note) && (
+                  <div className="absolute top-2 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                    {note}
+                  </div>
+                )}
+                {showLabels && !highlightedNotes.includes(note) && (
+                  <span className="text-xs font-medium text-muted-foreground">
                     {note}
                   </span>
                 )}
@@ -100,9 +105,8 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
               key={`${blackKey.note}${currentOctave}`}
               className={cn(
                 'absolute bg-gray-800 border border-gray-700 rounded-b-md cursor-pointer transition-all duration-150',
-                'hover:bg-gray-700 active:bg-gray-600 flex items-end justify-center pb-1 z-10',
-                'h-20 w-6',
-                highlightedNotes.includes(blackKey.note) && 'bg-primary hover:bg-primary/80'
+                'hover:bg-gray-700 active:bg-gray-600 flex items-end justify-center pb-1 z-10 relative',
+                'h-20 w-6'
               )}
               style={{ 
                 left: `${centerPosition}px`,
@@ -114,6 +118,12 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
                 onKeyPress?.(blackKey.note);
               }}
             >
+              {/* Pastille pour les notes noires de la gamme */}
+              {highlightedNotes.includes(blackKey.note) && (
+                <div className="absolute top-1 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+                  {blackKey.note.replace('#', '♯').replace('b', '♭')}
+                </div>
+              )}
             </div>
           );
         })}

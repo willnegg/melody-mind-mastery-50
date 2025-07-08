@@ -75,9 +75,14 @@ const ScaleDetail: React.FC = () => {
       completeNotes.push(`${note}${currentOctave}`);
     });
     
-    // Ajouter l'octave finale (même octave que la dernière note + 1 demi-ton)
+    // Ajouter l'octave finale (même note que la première, octave suivante logique)
     const lastNoteOctave = parseInt(completeNotes[completeNotes.length - 1].slice(-1));
-    completeNotes.push(`${root}${lastNoteOctave + 1}`);
+    const firstNoteOctave = parseInt(completeNotes[0].slice(-1));
+    
+    // Si on n'a pas encore changé d'octave dans la gamme, l'octave finale = première + 1
+    // Sinon, on prend l'octave de la dernière note
+    const finalOctave = lastNoteOctave === firstNoteOctave ? firstNoteOctave + 1 : lastNoteOctave;
+    completeNotes.push(`${root}${finalOctave}`);
     
     return completeNotes;
   };

@@ -466,7 +466,7 @@ const ScaleDetail: React.FC = () => {
                 <CardTitle>Piano - Jouez les 7 notes de la gamme</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto flex justify-center">
                   <PianoKeyboard 
                     octaves={2}
                     highlightedNotes={scaleNotes}

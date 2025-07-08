@@ -345,32 +345,32 @@ const ScaleDetail: React.FC = () => {
                 <CardTitle>{getScaleDisplayName(currentRoot)} {scale.name}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    {getScaleSignature(currentRoot) && (
-                      <p className="font-medium mb-2">{getScaleSignature(currentRoot)}</p>
-                    )}
-                    <div className="flex flex-wrap gap-2">
-                      {scaleNotes.map((note, index) => (
-                        <Badge 
-                          key={index} 
-                          variant={playedNotes.includes(note) ? "default" : "outline"}
-                          className="transition-colors"
-                        >
-                          {index + 1}. {note}
-                        </Badge>
-                      ))}
-                      <Badge variant="secondary">8. {currentRoot}</Badge>
-                    </div>
+                <div>
+                  {getScaleSignature(currentRoot) && (
+                    <p className="font-medium mb-2">{getScaleSignature(currentRoot)}</p>
+                  )}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {scaleNotes.map((note, index) => (
+                      <Badge 
+                        key={index} 
+                        variant={playedNotes.includes(note) ? "default" : "outline"}
+                        className="transition-colors"
+                      >
+                        {index + 1}. {note}
+                      </Badge>
+                    ))}
+                    <Badge variant="secondary">8. {currentRoot}</Badge>
                   </div>
-                  <Button
-                    variant="outline"
-                    onClick={handleListenScale}
-                    disabled={!isLoaded}
-                  >
-                    <Volume2 className="h-4 w-4 mr-2" />
-                    {isPlaying ? 'Stop' : 'Écouter la gamme'}
-                  </Button>
+                  <div className="text-center">
+                    <Button
+                      variant="outline"
+                      onClick={handleListenScale}
+                      disabled={!isLoaded}
+                    >
+                      <Volume2 className="h-4 w-4 mr-2" />
+                      {isPlaying ? 'Stop' : 'Écouter la gamme'}
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>

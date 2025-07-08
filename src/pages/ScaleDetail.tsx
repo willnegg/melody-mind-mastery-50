@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { CheckCircle, Play, ArrowRight, ArrowLeft, Volume2, Brain } from 'lucide-react';
-import { scaleTypes, getScaleNotes } from '@/constants/musicTheory';
+import { scaleTypes, getScaleNotes, getEnharmonicEquivalent } from '@/constants/musicTheory';
 import PianoKeyboard from '@/components/PianoKeyboard';
 import { useAudio } from '@/hooks/useAudio';
 import { useProgressStore } from '@/store/progressStore';
@@ -197,8 +197,11 @@ const ScaleDetail: React.FC = () => {
   }
 
   const handleNotePlay = (note: string) => {
-    if (!playedNotes.includes(note) && scaleNotes.includes(note)) {
-      setPlayedNotes([...playedNotes, note]);
+    // Convert chromatic note to enharmonic equivalent for current key
+    const enharmonicNote = getEnharmonicEquivalent(note, currentRoot);
+    
+    if (!playedNotes.includes(enharmonicNote) && scaleNotes.includes(enharmonicNote)) {
+      setPlayedNotes([...playedNotes, enharmonicNote]);
     }
   };
 

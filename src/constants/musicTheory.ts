@@ -2,6 +2,27 @@
 
 export const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
+// Enharmonic mapping for each major key
+const enharmonicMap: Record<string, Record<string, string>> = {
+  'C': {},
+  'G': {},
+  'F': { 'A#': 'Bb' },
+  'D': {},
+  'Bb': { 'D#': 'Eb', 'A#': 'Bb' },
+  'A': {},
+  'Eb': { 'D#': 'Eb', 'G#': 'Ab', 'A#': 'Bb' },
+  'Ab': { 'C#': 'Db', 'D#': 'Eb', 'G#': 'Ab', 'A#': 'Bb' },
+  'E': {},
+  'B': {},
+  'Db': { 'C#': 'Db', 'D#': 'Eb', 'F#': 'Gb', 'G#': 'Ab', 'A#': 'Bb' },
+  'Gb': { 'C#': 'Db', 'D#': 'Eb', 'F#': 'Gb', 'G#': 'Ab', 'A#': 'Bb', 'B': 'Cb' }
+};
+
+// Function to convert chromatic note to enharmonic equivalent for a given key
+export const getEnharmonicEquivalent = (chromaticNote: string, key: string): string => {
+  return enharmonicMap[key]?.[chromaticNote] || chromaticNote;
+};
+
 export const scaleTypes = {
   major: {
     name: 'Majeure',

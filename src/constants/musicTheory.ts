@@ -138,8 +138,30 @@ export const relativeMinors = {
   'G#': 'Fm', 'D#': 'Cm', 'A#': 'Gm', 'F': 'Dm'
 };
 
+// Enharmonic equivalents for major scales
+const majorScaleEnharmonics: Record<string, string[]> = {
+  'C': ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
+  'G': ['G', 'A', 'B', 'C', 'D', 'E', 'F#'],
+  'F': ['F', 'G', 'A', 'Bb', 'C', 'D', 'E'],
+  'D': ['D', 'E', 'F#', 'G', 'A', 'B', 'C#'],
+  'Bb': ['Bb', 'C', 'D', 'Eb', 'F', 'G', 'A'],
+  'A': ['A', 'B', 'C#', 'D', 'E', 'F#', 'G#'],
+  'Eb': ['Eb', 'F', 'G', 'Ab', 'Bb', 'C', 'D'],
+  'Ab': ['Ab', 'Bb', 'C', 'Db', 'Eb', 'F', 'G'],
+  'E': ['E', 'F#', 'G#', 'A', 'B', 'C#', 'D#'],
+  'B': ['B', 'C#', 'D#', 'E', 'F#', 'G#', 'A#'],
+  'Db': ['Db', 'Eb', 'F', 'Gb', 'Ab', 'Bb', 'C'],
+  'Gb': ['Gb', 'Ab', 'Bb', 'Cb', 'Db', 'Eb', 'F']
+};
+
 // Helper functions
 export const getScaleNotes = (rootNote: string, scaleType: keyof typeof scaleTypes): string[] => {
+  // For major scales, use enharmonic equivalents
+  if (scaleType === 'major' && majorScaleEnharmonics[rootNote]) {
+    return majorScaleEnharmonics[rootNote];
+  }
+  
+  // Fallback to chromatic calculation for other scales
   const rootIndex = notes.indexOf(rootNote);
   const intervals = scaleTypes[scaleType].intervals;
   return intervals.map(interval => notes[(rootIndex + interval) % 12]);

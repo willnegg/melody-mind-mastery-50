@@ -78,7 +78,7 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
               >
                 {/* Pastille pour les notes de la gamme */}
                 {highlightedNotes.includes(note) && (
-                  <div className="absolute top-2 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                  <div className="absolute top-2 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold z-20">
                     {note}
                   </div>
                 )}
@@ -120,7 +120,7 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
             >
               {/* Pastille pour les notes noires de la gamme */}
               {highlightedNotes.includes(blackKey.note) && (
-                <div className="absolute top-1 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+                <div className="absolute top-1 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold z-30">
                   {blackKey.note.replace('#', '♯').replace('b', '♭')}
                 </div>
               )}

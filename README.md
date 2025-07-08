@@ -64,11 +64,29 @@ cd music-theory-app
 ```
 
 2. **Installer les dépendances**
+
+**Pour Mac M1/M2 (recommandé) :**
+```bash
+# Installer Bun si pas déjà fait
+curl -fsSL https://bun.sh/install | bash
+
+# Installer les dépendances
+bun install
+```
+
+**Pour autres systèmes :**
 ```bash
 npm install
 ```
 
 3. **Lancer en développement**
+
+**Avec Bun (M1/M2) :**
+```bash
+bun run dev
+```
+
+**Avec npm :**
 ```bash
 npm run dev
 ```

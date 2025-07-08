@@ -390,18 +390,22 @@ const ScaleDetail: React.FC = () => {
                     }`}>
                       {step.completed ? <CheckCircle className="h-4 w-4" /> : index + 1}
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 text-center">
                       <h3 className="font-medium">{step.title}</h3>
                       <p className="text-sm text-muted-foreground">{step.description}</p>
                     </div>
-                    {step.id === 'quiz' && learningSteps[1].completed && !step.completed && !showQuiz && (
-                      <Button onClick={handleStartQuiz} size="sm">
-                        <Brain className="h-4 w-4 mr-2" />
-                        Commencer le quiz
-                      </Button>
-                    )}
                   </div>
                 ))}
+                
+                {/* Bouton quiz centré en bas */}
+                {learningSteps[1].completed && !learningSteps[2].completed && !showQuiz && (
+                  <div className="text-center pt-4">
+                    <Button onClick={handleStartQuiz} size="lg">
+                      <Brain className="h-4 w-4 mr-2" />
+                      Commencer le quiz
+                    </Button>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

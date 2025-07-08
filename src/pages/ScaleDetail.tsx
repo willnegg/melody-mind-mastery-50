@@ -45,8 +45,41 @@ const ScaleDetail: React.FC = () => {
   const currentRoot = scaleProgression[currentScaleIndex];
   const scaleNotes = getScaleNotes(currentRoot, scaleType);
   
-  // Ajouter l'octave (8ème degré) - une octave plus haut
-  const completeScaleNotes = [...scaleNotes.map(note => `${note}4`), `${currentRoot}5`];
+  // Déterminer l'octave de départ selon la tonalité
+  const getStartingOctave = (root: string) => {
+    const highKeys = ['Ab', 'A', 'Bb', 'B'];
+    return highKeys.includes(root) ? 2 : 3;
+  };
+
+  // Générer les notes avec octaves logiques
+  const getCompleteScaleNotes = (root: string, notes: string[]) => {
+    const startingOctave = getStartingOctave(root);
+    const completeNotes: string[] = [];
+    let currentOctave = startingOctave;
+    
+    notes.forEach((note, index) => {
+      // Si on revient à C après avoir dépassé B, on passe à l'octave suivante
+      if (index > 0) {
+        const prevNote = notes[index - 1];
+        const prevNoteBase = prevNote.replace(/[#b]/g, '');
+        const currentNoteBase = note.replace(/[#b]/g, '');
+        
+        // Si la note précédente était B (ou proche) et qu'on arrive sur C (ou proche), monter d'octave
+        if ((prevNoteBase === 'B' || prevNoteBase === 'A') && (currentNoteBase === 'C' || currentNoteBase === 'D')) {
+          currentOctave++;
+        }
+      }
+      
+      completeNotes.push(`${note}${currentOctave}`);
+    });
+    
+    // Ajouter l'octave (répétition de la tonique)
+    completeNotes.push(`${root}${currentOctave + (completeNotes[completeNotes.length - 1].includes('5') ? 0 : 1)}`);
+    
+    return completeNotes;
+  };
+
+  const completeScaleNotes = getCompleteScaleNotes(currentRoot, scaleNotes);
 
   // Fonction pour obtenir le nom de la gamme avec français/international
   const getScaleDisplayName = (root: string) => {

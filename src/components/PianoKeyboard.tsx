@@ -90,11 +90,6 @@ const PianoKeyboard: React.FC<PianoKeyboardProps> = ({
                 onKeyPress?.(blackKey.note);
               }}
             >
-              {showLabels && (
-                <span className="text-xs font-medium text-white">
-                  {blackKey.note}
-                </span>
-              )}
             </div>
           );
         })}

@@ -144,7 +144,7 @@ const PianoBasics: React.FC = () => {
                   <li>• Les notes F (Fa) à gauche des groupes de 3</li>
                 </ul>
                 
-                <div className="overflow-x-auto bg-gradient-to-b from-muted/20 to-muted/10 p-4 rounded-lg">
+                <div className="overflow-x-auto bg-gradient-to-b from-muted/20 to-muted/10 p-4 rounded-lg flex justify-center">
                   <PianoKeyboard 
                     octaves={2}
                     highlightedNotes={['C', 'F']}

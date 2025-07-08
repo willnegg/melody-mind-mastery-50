@@ -17,7 +17,7 @@ const Learn: React.FC = () => {
         description: scale.description,
         link: `/scale/${key}`
       })),
-      color: 'text-purple-400',
+      color: 'text-primary',
       isUnlocked: true
     },
     {
@@ -29,7 +29,7 @@ const Learn: React.FC = () => {
         description: chord.description,
         link: `/chord/${key}`
       })),
-      color: 'text-purple-400',
+      color: 'text-secondary',
       isUnlocked: false
     },
     {
@@ -41,7 +41,7 @@ const Learn: React.FC = () => {
         description: cadence.description,
         link: `/cadence/${key}`
       })),
-      color: 'text-purple-400',
+      color: 'text-accent-foreground',
       isUnlocked: false
     }
   ];

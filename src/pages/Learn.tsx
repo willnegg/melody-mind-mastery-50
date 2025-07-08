@@ -17,7 +17,7 @@ const Learn: React.FC = () => {
         description: scale.description,
         link: `/scale/${key}`
       })),
-      color: 'text-purple-400',
+      color: 'text-primary',
       isUnlocked: true
     },
     {

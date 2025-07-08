@@ -131,15 +131,15 @@ L'application utilise une navigation par onglets en bas d'écran :
 
 ```
 src/
-├── components/          # Composants réutilisables
-│   ├── ui/             # Composants UI Shadcn
+├── components/           # Composants réutilisables
+│   ├── ui/               # Composants UI Shadcn
 │   ├── PianoKeyboard.tsx
 │   ├── CircleOfFifths.tsx
 │   ├── ScaleDisplay.tsx
 │   ├── ChordDisplay.tsx
 │   ├── ProgressBar.tsx
 │   └── Navigation.tsx
-├── pages/              # Pages de l'application
+├── pages/                # Pages de l'application
 │   ├── Learn.tsx
 │   ├── Practice.tsx
 │   ├── EarTraining.tsx
@@ -148,12 +148,12 @@ src/
 │   ├── ChordDetail.tsx
 │   ├── CadenceDetail.tsx
 │   └── EarTrainingExercise.tsx
-├── constants/          # Données musicales
+├── constants/            # Données musicales
 │   └── musicTheory.ts
-├── store/             # Gestion d'état
+├── store/                # Gestion d'état
 │   └── progressStore.ts
-├── hooks/             # Hooks personnalisés
-└── lib/               # Utilitaires
+├── hooks/                # Hooks personnalisés
+└── lib/                  # Utilitaires
 ```
 
 ## 💾 Persistance des Données
